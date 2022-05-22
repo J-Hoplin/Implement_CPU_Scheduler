@@ -23,7 +23,10 @@ public class RoundRobin extends Scheduler{
         CheckSchedulerExitCondition();
         IntegratedInitialJobPerEachCircular();
         /// Logic ///
+        if(cpu.CPUhasProcess()){
 
+        }
+        else{}
         /////////////
         IntegratedAfterJobPerEachCircular();
     }

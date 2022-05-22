@@ -90,8 +90,27 @@ public class ShortestJobFirst extends Scheduler{
             }
             //CPU안에서 돌아가는 프로세스가 없다면
             else{
+                // 다음 프로세스를 뽑았을때 CPU Burst가 0인것에 대한 예외처리를 위한 코드
                 if(!ReadyQueueEmpty()){
-                    cpu.setProcess(selectNextProcess());
+                    while(true){
+                        // ReadyQueue가 비어있지 않은 경우이다.
+                        if(!ReadyQueueEmpty()){
+                            // ReadyQueue Head 프로세스를 뽑는다
+                            ProcessObjects nextProcess = selectNextProcess();
+                            // 해당 프로세스의 CPU Burst값이 0보다 작거나 같으면 IO Queue에 넣는 검사과정을 거친다.
+                            if(nextProcess.getRemaining_cpu_burst() <= 0){
+                                FixedVariables.ConsolePrintFileWriteParellel("Process " + nextProcess.getPid() + " selected but go to IOQueueChecker due to " + nextProcess.getRemaining_cpu_burst() + " burst time");
+                                EnqueToIOQueue(nextProcess);
+                                // 0보다 큰 경우에는 CPU의 프로세스로 세팅한다.
+                            }else{
+                                cpu.setProcess(nextProcess);
+                                break;
+                            }
+                            // 검사를 하다가 Ready Queue가 비어있을 수 도 있다. 이런 경우에는 Break하고 다음 사이클로 넘어간다.
+                        }else{
+                            break;
+                        }
+                    }
                 }
             }
             /////////////
