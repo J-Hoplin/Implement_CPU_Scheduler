@@ -110,7 +110,7 @@ public class RoundRobin extends Scheduler{
                     }
                 }
                 // CPU안에 프로세스가 없더라도 새로운 프로세스가 들어왔을떄 Time Quantum은 초기화된 상태이다.
-                // 그렇기에 추가적인 TimeQuantum Reset작업은 불필요하다.ㄴ
+                // 그렇기에 추가적인 TimeQuantum Reset작업은 불필요하다.
             }
             /////////////
             IntegratedAfterJobPerEachCircular();
