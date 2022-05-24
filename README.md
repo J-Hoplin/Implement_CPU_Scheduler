@@ -1,8 +1,10 @@
 # Operating System Programming Assignment
 ***
 Source Code / Readme Written By : 윤준호(a.k.a Hoplin)
+
 Subject : Operating System
-Description : Implement CPU Scheduling
+
+Description : Implement CPU Scheduling. Use programming language except Script Language
 ***
 ### Version State
 
