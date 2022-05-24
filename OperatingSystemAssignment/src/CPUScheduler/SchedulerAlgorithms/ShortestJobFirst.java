@@ -85,7 +85,7 @@ public class ShortestJobFirst extends Scheduler{
                 }
                 // 아닌 경우에는 넘긴다.
                 else{
-                    ;
+                    System.out.println("Process : " + cpu.getProcess().getPid() + " is now Running!");
                 }
             }
             //CPU안에서 돌아가는 프로세스가 없다면

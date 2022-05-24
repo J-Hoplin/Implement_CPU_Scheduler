@@ -41,6 +41,7 @@ public class RoundRobin extends Scheduler{
     }
 
     @Override
+    // 다시구현
     public void Algorithm() {
         while(true){
             System.out.println("[ Log at time : " + SchedulerTotalRunningTime + " ]");
@@ -49,6 +50,15 @@ public class RoundRobin extends Scheduler{
             /// Logic ///
             // 기존 로직에 TimeQuantum이 0이 됐을때에 대해서를 추가한다.
             if(cpu.CPUhasProcess()){
+                /*
+                * CPU에서 Running하고 있는  프로세스의 조건은 아래와 같다
+                *
+                *  1. CPU Burst가 0 이하인 경우
+                *  2. CPU TIme이 0 이하인 경우
+                *  3. Time Quantum이 0이하인 경우
+                *
+                *  위 세가지 경우에는 결국 CPU안에서 Running하고 있는 프로세스에 대한 ContextSwitching을 해주어야 한다.
+                * */
                 if(cpu.getProcess().getRemaining_cpu_burst() <= 0 || cpu.getProcess().getRemaining_cpu_time() <= 0 || this.TimeQuantum <= 0){
                     ProcessObjects p = null;
                     if(!ReadyQueueEmpty()){
@@ -74,18 +84,28 @@ public class RoundRobin extends Scheduler{
                         // 꺼낸 후에는 TimeQuantum을 우선적으로 초기화해준다.
                         p = dispatcher.ContextSwitching(cpu);
                     }
-                    // 기존에 Running하던 CPU만 나오던가
-                    // ContextSwitching이 일어났다거나
-                    // 이 경우들에 대해서는 모두 Time Quantum을 Reset해주어야한다.
+                    // Time Quantum이 끝났지만, cpu time과 cpu burst time이 아직 남아있는 경우
+                    // IO Queue에 들어가지 않고, 바로 Ready Queue로 들어간다.
+                    if(p.getRemaining_cpu_time() > 0 && p.getRemaining_cpu_burst() > 0){
+                        ReEnqueueToReadyQueue(p,true);
+                    }
+                    // Time Quantum도 끝났으며,
+                    else{
+                        // 기존에 Running하던 CPU만 나오던가
+                        // ContextSwitching이 일어났다거나
+                        // 이 경우들에 대해서는 모두 Time Quantum을 Reset해주어야한다.
+                        EnqueToIOQueue(p);
+                    }
+                    // 결국 이 과정이 끝났을때 TimeQuantum은 초기화가 이루어 져야한다.
                     resetTimeQuantum();
-                    EnqueToIOQueue(p);
                 }
-                //위 조건이 아니라면 그냥 진행
+                // CPU에서 Running State인 프로세스는 있지만 Context Switching이 이루어질 필요가 없는 단계
                 else{
-                    ;
+                    System.out.println("\nProcess : " + cpu.getProcess().getPid() + " is now Running!");
                 }
             }
-
+            // CPU 안에서 Running State의 프로세스가 없는 경우
+            // 이 경우에서 TimeQuantum을 초기화해줄 필요는 없다. 기존에 CPU에서 돌아가던 Process를 뺐을때 TimeQuantum을 초기화 하기 때문
             else{
                 // 다음 프로세스를 뽑았을때 CPU Burst가 0인것에 대한 예외처리를 위한 코드
                 if(!ReadyQueueEmpty()){
@@ -114,7 +134,7 @@ public class RoundRobin extends Scheduler{
             }
             /////////////
             IntegratedAfterJobPerEachCircular();
-            // TimeQuantum 1초는 CPU가 있을때에만 해당한다.
+            // TimeQuantum 1초는 CPU안에서 돌아가는 CPU가 있을때에만 해당한다.
             // 그렇기 때문에 CPU에 프로세스가 있는지 확인하고 1초를 뺀다.
             if(cpu.CPUhasProcess()){
                 oneSecondPastTimeQuantum();

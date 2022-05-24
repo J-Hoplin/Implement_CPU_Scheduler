@@ -76,12 +76,29 @@ public abstract class Scheduler{
         ReadyQueue.add(processObjects);
     }
 
+    protected void ReEnqueueToReadyQueue(ProcessObjects processObjects,boolean ifCpuValuesNotChanged){
+        // 만약 CPU 관련 value들이(CPU Time, CPU Burst) 변하지 않는다고 한다면,
+        if(ifCpuValuesNotChanged){
+            // 그대로 넣는다
+            System.out.println("Process " + processObjects.getPid() + " go back to ReadyQueue Directly.");
+            System.out.println("Process left CPU Time : " + processObjects.getRemaining_cpu_time());
+            System.out.println("Process left CPU Burst Time : " + processObjects.getRemaining_cpu_burst());
+            ReadyQueue.add(processObjects);
+        }
+        // 변해야하는 경우에는 기존 ReEnqueueToReadyQueue()메소드를 그대로 사용
+        else{
+            ReEnqueueToReadyQueue(processObjects);
+        }
+
+    }
+
     public void EnqueToIOQueue(ProcessObjects processObjects){
         // 만약 프로세스의 전체 IO Burst가 0보다 작거나 같으면 IO Queue로 안들어 가고 ReadyQueue로 가게 된다
         // IO Burst갸 0이하인 프로세스에 대해서
         if(processObjects.getIOBurstTime() <= 0){
             // 만약 CPU Time이 끝난 프로세스라면 finish queue로
             if(processObjects.getRemaining_cpu_time() <= 0){
+                processObjects.setFinishedTime(SchedulerTotalRunningTime);
                 addToFinishedQueue(processObjects);
                 // 아닌 경우에는 정상적으로 다시 Ready Queue에 넣는다.
             }else{
@@ -118,7 +135,6 @@ public abstract class Scheduler{
 
     protected void addToFinishedQueue(ProcessObjects process){
         FixedVariables.ConsolePrintFileWriteParellel("Process " + process.getPid() + " end of running and enque to finished Queue at " + SchedulerTotalRunningTime);
-        process.setFinishedTime(SchedulerTotalRunningTime);
         finishedQueue.add(process);
     }
 
@@ -190,6 +206,7 @@ public abstract class Scheduler{
         }
         for(ProcessObjects processObjects : q){
             if(processObjects.getRemaining_cpu_time() <= 0){
+                processObjects.setFinishedTime(SchedulerTotalRunningTime);
                 addToFinishedQueue(processObjects);
             }else{
                 ReEnqueueToReadyQueue(processObjects);

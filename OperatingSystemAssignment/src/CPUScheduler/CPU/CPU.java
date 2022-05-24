@@ -24,6 +24,7 @@ public class CPU {
     }
 
     public void setProcess(ProcessObjects processObjects){
+        System.out.println("Process " + processObjects.getPid() + " state changed to running state");
         this.process = processObjects;
     }
 
