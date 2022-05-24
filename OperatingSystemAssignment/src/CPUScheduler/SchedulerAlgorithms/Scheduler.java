@@ -9,32 +9,34 @@ import java.util.*;
 import java.util.function.Predicate;
 
 public abstract class Scheduler{
-
+    //스케줄러 이름
     private String SchedulerAlgorithmName;
 
     // 수행이 완료된 프로세스 저장
     protected LinkedList<ProcessObjects> finishedQueue =new LinkedList<>();
-
     // Genereated Processor List Stack
     // Set access modifier protected, Inherited class should be access this variable
     protected LinkedList<ProcessObjects> ProcessStack = new LinkedList<>();
+    // Process Ready Queue : Ready state
+    protected LinkedList<ProcessObjects> ReadyQueue = new LinkedList<>();
+    // IO Stated Queue : Blocking state
+    protected LinkedList<ProcessObjects> IOQueue = new LinkedList<>();
 
     // 스케줄러 전체 작동 시간을 의미한다.
     protected int SchedulerTotalRunningTime = 0;
-
-
     //Total Process Count
     private final int processCount;
-
     // CPU Instance
     protected CPU cpu = CPU.getInstance();
     // Dispatcher Instance
     protected Dispatcher dispatcher = Dispatcher.getInstance();
 
-    // Process Ready Queue : Ready state
-    protected LinkedList<ProcessObjects> ReadyQueue = new LinkedList<>();
-    // IO Stated Queue : Blocking state
-    protected LinkedList<ProcessObjects> IOQueue = new LinkedList<>();
+    //CPU IDLE Time
+    private int CPUIDLETime = 0;
+    // I/O IDLE Time
+    private int IOIDLETime = 0;
+
+
 
     // Initiate Processes for this Scheduler
     private void initiateProcess(List<Integer> preprocessPCBs){
@@ -79,11 +81,17 @@ public abstract class Scheduler{
     protected void ReEnqueueToReadyQueue(ProcessObjects processObjects,boolean ifCpuValuesNotChanged){
         // 만약 CPU 관련 value들이(CPU Time, CPU Burst) 변하지 않는다고 한다면,
         if(ifCpuValuesNotChanged){
-            // 그대로 넣는다
-            System.out.println("Process " + processObjects.getPid() + " go back to ReadyQueue Directly.");
-            System.out.println("Process left CPU Time : " + processObjects.getRemaining_cpu_time());
-            System.out.println("Process left CPU Burst Time : " + processObjects.getRemaining_cpu_burst());
-            ReadyQueue.add(processObjects);
+            // 만약 ReadyQueue가 비어있고, CPU에서 작동중인 프로세스가 없으면 바로 CPU에 넣어준다.
+            if(ReadyQueueEmpty() && !cpu.CPUhasProcess()){
+                System.out.println("Process  : " + processObjects.getPid() + " re-set to Running State. Ready Queue & CPU Running Process is empty");
+                cpu.setProcess(processObjects);
+            }else{
+                // 그대로 넣는다
+                System.out.println("Process " + processObjects.getPid() + " go back to ReadyQueue Directly.");
+                System.out.println("Process left CPU Time : " + processObjects.getRemaining_cpu_time());
+                System.out.println("Process left CPU Burst Time : " + processObjects.getRemaining_cpu_burst());
+                ReadyQueue.add(processObjects);
+            }
         }
         // 변해야하는 경우에는 기존 ReEnqueueToReadyQueue()메소드를 그대로 사용
         else{
@@ -94,20 +102,29 @@ public abstract class Scheduler{
 
     public void EnqueToIOQueue(ProcessObjects processObjects){
         // 만약 프로세스의 전체 IO Burst가 0보다 작거나 같으면 IO Queue로 안들어 가고 ReadyQueue로 가게 된다
-        // IO Burst갸 0이하인 프로세스에 대해서
+        // IO Burst가 0이하인 프로세스에 대해서
         if(processObjects.getIOBurstTime() <= 0){
-            // 만약 CPU Time이 끝난 프로세스라면 finish queue로
+            // 만약 CPU Time이 끝난 프로세스라면 finish queue 로
             if(processObjects.getRemaining_cpu_time() <= 0){
                 processObjects.setFinishedTime(SchedulerTotalRunningTime);
                 addToFinishedQueue(processObjects);
                 // 아닌 경우에는 정상적으로 다시 Ready Queue에 넣는다.
             }else{
-                System.out.println("Process " + processObjects.getPid() + " reenque to ready queue");
-                ReEnqueueToReadyQueue(processObjects);
+                System.out.println("Process : " + processObjects.getPid() + " reenque to ready queue");
+                // 만약 Ready Queue도 비어있고, CPU에서 Running하고 있는 프로세스도 없다면, 해당 프로세스를 다시 레디큐에 넣지 않고 CPU에 넣는다
+                if(ReadyQueueEmpty() && !cpu.CPUhasProcess()){
+                    System.out.println("Process  : " + processObjects.getPid() + " re-set to Running State. Ready Queue & CPU Running Process is empty");
+                    cpu.setProcess(processObjects);
+                }
+                // ContextSwitching에 의해 CPU에 다른 프로세스가 있거나 Ready Queue에 프로세스가 있는 경우에는
+                else{
+                    ReEnqueueToReadyQueue(processObjects);
+                }
             }
         }
         // 만약 아닌 경우, IOQueue로 들어가게 된다.
         else{
+            System.out.println("Process : " + processObjects.getPid() + " go to I/O State(Blocked State)");
             IOQueue.add(processObjects);
         }
     }
@@ -140,6 +157,7 @@ public abstract class Scheduler{
 
     //각 순환별 최초로 실행해야하는 작업들이다.
     protected void IntegratedInitialJobPerEachCircular(){
+        CheckSchedulerExitCondition(); // 종료조건 검사
         CheckProcessStackAndEnqueToReadyQueue(); // 프로세스 스택에서 각 프로세스들의 ArrivalTime을 검사한 후에 ReadyQueue에 넣는작업
         CheckIOQueueUnLockBlockedState(); // IO Queue에서 프로세스의 IO Burst를 검사한다.
     }
@@ -147,11 +165,49 @@ public abstract class Scheduler{
     // 각 순환별 마지막으로 실행해 주어야 하는 작업들이다.
     // 이유 : 초반 실행히 CPU의 프로세스가 null인 상태에서 연산을 하게되면 NullPointerException 예외의 위험성으로 인해
     protected void IntegratedAfterJobPerEachCircular(){
+        printCycleSummary();
+        CheckSchedulerExitCondition(); // 종료조건 검사 : 사이클이 끝나기 전에도 검사를 해주어야 한다. 이 과정이 없으면 뒤에 불필요한 연산이 생기므로
         ReadyQueueAddOneSecond(); // Ready Queue의 프로세스 ready state 1초씩 증가
         IOQueueAddOneSecond(); // IO Queue의 프로세스들 blocked state 1초씩 증가
         cpu.processOneSecondPast(); // CPU의 주도권을 가지고 있는 프로세스의
+        IOIDLEOneSecond(); // IO IDLE상태에 대한 검사
+        CPUIDLEOneSecond(); // CPU IDLE상태에 대한 검사
         SchedulerTotalRunningTime++;
         System.out.println("Cycle ends\n");
+    }
+
+    public void printCycleSummary(){
+        System.out.println("\n** Cycle Summary **");
+        ArrayList<String> e = new ArrayList<>();
+        System.out.println("( CPU Info )");
+        System.out.print("Running Process : ");
+        if(cpu.CPUhasProcess()){
+            System.out.println(cpu.getProcess().getPid());
+        }else{
+            System.out.println("No other process Running");
+        }
+        System.out.println("( Ready Queue )");
+        System.out.print("Ready Queue : ");
+        if(ReadyQueueEmpty()){
+            System.out.println("No other process is ready state");
+        }else{
+            for(ProcessObjects p : ReadyQueue){
+                e.add(p.getPid());
+            }
+            System.out.println("Ready Queue : " + String.join("->",e));
+        }
+        e.clear();
+        System.out.println("( I/O Queue )");
+        System.out.print("I/O Queue : ");
+        if(IOQueueEmpty()){
+            System.out.println("No other process is blocked state");
+        }else{
+            for(ProcessObjects p : IOQueue){
+                e.add(p.getPid());
+            }
+            System.out.println(String.join("->",e));
+        }
+        System.out.println("*******************\n");
     }
 
     protected void printProcessList(){
@@ -178,6 +234,20 @@ public abstract class Scheduler{
     //스케줄러의 실행시간에 1초를 더해준다.
     public void SchedulerRunningTimeAddOneSecond(){
         SchedulerTotalRunningTime++;
+    }
+
+    public void CPUIDLEOneSecond(){
+        // CPU에 프로세스가 없을때만 IDLE Time에 1초를 더해준다
+        if(!cpu.CPUhasProcess()){
+            CPUIDLETime++;
+        }
+    }
+
+    public void IOIDLEOneSecond(){
+        // IO Queue에서 I/O상태인 프로세스가 없을때만 1초를 더해준다.
+        if(IOQueue.isEmpty()){
+            IOIDLETime++;
+        }
     }
 
     //ProcessStack에서 현재 스케줄러 러닝 타임에 비해 작거나 같은 프로세스가 있으면 Ready Queue에 Enque한다
@@ -239,6 +309,15 @@ public abstract class Scheduler{
         * */
         if(ProcessStackEmpty() && ReadyQueueEmpty() && IOQueueEmpty() && !cpu.CPUhasProcess()){
             System.out.println("Scheduler Simulation End!");
+            /*
+             이 시뮬레이터에서 스케줄러는 IO Running Time까지 포함한 시간이다.
+             그렇기 때문에 이 종류 시점에는 마지막 프로세스의 IO Time까지 포함한 시간을 값으로 가지게 된다
+             하지만 실제 스케줄러(간트 차트상에서)에서는 마지막 프로세스의 IO Time을 뺀 시간까지만 고려를 하게된다
+
+             CPU스케줄러와 Blocked State는 별개이므로
+             결국 스케줄러의 총 Running Time은 마지막 Finish 프로세스의 Finish Time과 동일해야 한다.
+             */
+            SchedulerTotalRunningTime = finishedQueue.getLast().getFinishedTime();
             printSummary();
             FixedVariables.ExitProgram();
         }
@@ -290,11 +369,36 @@ public abstract class Scheduler{
         System.out.println("Scheduler Finishing Time : " + SchedulerTotalRunningTime);
         System.out.println("Average turnaround time : " + (totalTurnAroundTimeProcesses / processCount));
         System.out.println("Average waiting time : " + (totalWaitingTimeProcesses / processCount));
+        System.out.println("CPU Utilization : " + returnCPUUtilization());
+        System.out.println("I/O Utilization : " + returnIOUtilization());
+        System.out.println("Throughput in processes completed per hundred time units : " + returnThroughPutInProcessCompletedPerHundredTimeUnit());
     }
+
+    // CPU Utilization
+    public String returnCPUUtilization(){
+        float t = ((float)(SchedulerTotalRunningTime - CPUIDLETime) / (float)SchedulerTotalRunningTime) * 100;
+        // 소수점 두자리까지만
+        String value = String.format("%.2f",t);
+        return value + " %";
+    }
+
+    // IO Utilization
+    public String returnIOUtilization(){
+        float t = ((float)(SchedulerTotalRunningTime - IOIDLETime) / (float)SchedulerTotalRunningTime) * 100;
+        // 소수점 두자리까지만
+        String value = String.format("%.2f",t);
+        return value + " %";
+    }
+
+    public String returnThroughPutInProcessCompletedPerHundredTimeUnit(){
+        float t = ((float)(finishedQueue.size())/(float)SchedulerTotalRunningTime) * 100;
+        String value = String.format("%.2f",t);
+        return value + " %";
+    }
+
 
     // 스케줄링 알고리즘마다 다음 프로세스 선택기준이 다를 수 있으므로 추상메소드 정의
     public abstract ProcessObjects selectNextProcess();
     // Implement each cpu scheduling algorithm in this method
     public abstract void Algorithm();
-
 }

@@ -45,7 +45,6 @@ public class RoundRobin extends Scheduler{
     public void Algorithm() {
         while(true){
             System.out.println("[ Log at time : " + SchedulerTotalRunningTime + " ]");
-            CheckSchedulerExitCondition();
             IntegratedInitialJobPerEachCircular();
             /// Logic ///
             // 기존 로직에 TimeQuantum이 0이 됐을때에 대해서를 추가한다.

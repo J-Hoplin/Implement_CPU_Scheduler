@@ -96,11 +96,19 @@ public class ProcessObjects implements Comparable<ProcessObjects>{
 
     // Set Random CPU Burst
     private void setRandomCPUBurst(){
-        this.CPUBurstTime = remaining_cpu_burst = random.nextInt(CPUBurstRandomSeed) + 1;
+        if(CPUBurstRandomSeed == 0){
+            this.CPUBurstTime = remaining_cpu_burst = 0;
+        }else{
+            this.CPUBurstTime = remaining_cpu_burst = random.nextInt(CPUBurstRandomSeed) + 1;
+        }
     }
     // Set Random IO Burst
     private void setRandomIOBurst(){
-        this.IOBurstTime = remaining_io_burst = random.nextInt(IOBurstRandomSeed) + 1;
+        if(IOBurstRandomSeed == 0){
+            this.IOBurstTime = remaining_io_burst = 0;
+        }else{
+            this.IOBurstTime = remaining_io_burst = random.nextInt(IOBurstRandomSeed) + 1;
+        }
     }
 
     public int getFirstArrivedTime(){

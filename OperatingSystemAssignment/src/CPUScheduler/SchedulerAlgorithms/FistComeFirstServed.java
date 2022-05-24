@@ -30,7 +30,6 @@ public class FistComeFirstServed extends Scheduler{
     public void Algorithm() {
         while(true){
             System.out.println("[ Log at time : " + SchedulerTotalRunningTime + " ]");
-            CheckSchedulerExitCondition();
             IntegratedInitialJobPerEachCircular();
             /// Logic ///
             //System.out.println(cpu.getProcess());
