@@ -73,11 +73,14 @@ public abstract class Scheduler{
     }
 
     protected void ReEnqueueToReadyQueue(ProcessObjects processObjects){
-        //프로세스 객체들의 CPU Burst, IOBurst를 다시 랜덤값으로 초기화한다.
+        //프로세스 객체의 CPU Burst, IOBurst를 다시 랜덤값으로 초기화한다.
         processObjects.setArrivalTime(SchedulerTotalRunningTime);
         processObjects.setCPUBurstIOBurstRandom();
+        // ReadyQueue가 비어있고, CPU에서 Running State인 프로세스가 존재하지 않는다면
+        // ReadyQueue로 가지 않고 바로 CPU에 올린다.
         if(ReadyQueueEmpty() && !cpu.CPUhasProcess()){
             cpu.setProcess(processObjects);
+            // 위 두 조건중 하나라도 충족 안할 시 ReadyQueue로 보낸다.
         }else{
             ReadyQueue.add(processObjects);
         }
