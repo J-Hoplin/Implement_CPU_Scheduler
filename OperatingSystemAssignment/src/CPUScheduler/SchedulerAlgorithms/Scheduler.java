@@ -138,6 +138,8 @@ public abstract class Scheduler{
         System.out.println("[ Process initiated. Process initiated list will be show below ]");
         printProcessList();
         System.out.println("===========================");
+        System.out.println("Simulation will start in 5second");
+        FixedVariables.BreakConsole(5000);
     }
 
     // Overloading
@@ -149,6 +151,8 @@ public abstract class Scheduler{
         System.out.println("[ Process initiated. Process initiated list will be show below ]");
         printProcessList();
         System.out.println("===========================");
+        System.out.println("Simulation will start in 5second");
+        FixedVariables.BreakConsole(5000);
     }
 
     protected void addToFinishedQueue(ProcessObjects process){
