@@ -10,6 +10,10 @@ Language : Java(jdk 1.8, Java 8)
 
 Tool : [JetBrain IntelliJ IDEA Ultimate](https://www.jetbrains.com/ko-kr/idea/download/#section=mac)
 ***
+### Class Diagram
+![image](https://user-images.githubusercontent.com/45956041/170363813-d3e10146-415b-460a-b4d8-81e27951ff86.png)
+
+***
 ### Version State
 
 - [v 1.0.0 : Implement FCFS / SJF : 2022/05/22](https://github.com/J-hoplin1/OS_Implement_CPU_Scheduler/tree/Implement_FCFS_SJF)
