@@ -88,9 +88,9 @@ Tool : [JetBrain IntelliJ IDEA Ultimate](https://www.jetbrains.com/ko-kr/idea/do
 
 #### Summary of Scheduler Simulation
 
-- Finishing Time(Scheduler End Time)
-- CPU Utilization
-- I/O Utilization
+- Finishing Time(모든 프로세스가 다 끝난 시각)
+- CPU Utilization(Percentage of time some job is running)
+- I/O Utilization(Percentage of time some job is blocked)
 - Throughput in processes completed per hundred time unit
 - Average turnaround time
 - Average waiting time
