@@ -61,6 +61,11 @@ Tool : [JetBrain IntelliJ IDEA Ultimate](https://www.jetbrains.com/ko-kr/idea/do
     - I/O Utilization, CPU Utilization, Throughput in processes completed per hundered time units 연산 알고리즘을 적용하였습니다.
 - [v 1.0.3 : 2022/05/25](https://github.com/J-hoplin1/OS_Implement_CPU_Scheduler/tree/v_1.0.3) : [main](https://github.com/J-hoplin1/OS_Implement_CPU_Scheduler)
     - 'ReadyQueueEmpty() && !cpu.CPUhasProcess()'를 하나의 메소드로 묶었습니다
+    ```java
+    protected boolean checkCPUReadyQueueEmpty(){
+        return ReadyQueueEmpty() && !cpu.CPUhasProcess();
+    }
+    ```
 ***
 ### Assignment Description
 이 과제에서는 CPU scheduling 알고리즘에 따라 여러 가지 성능수치가 어떻게 달라지는가를 관찰하기 위한 시뮬레이션을 수행한다. 시뮬레이션 프로그램이 수행해야 할 가장 기본적인 작업은 computation과 I/O 요청을 번갈아 수행하는 process들에 대해 CPU scheduling을 수행하는 것이다. 이를 위해 다음과 같이 간단한 가정을 한다. 
