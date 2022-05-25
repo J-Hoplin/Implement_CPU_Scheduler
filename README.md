@@ -8,7 +8,7 @@ Description : Implement CPU Scheduling. Use programming language except Script L
 
 Language : Java(jdk 1.8, Java 8)
 
-Tool : [JetBrain IntelliJ IDEA Professional](https://www.jetbrains.com/ko-kr/idea/download/#section=mac)
+Tool : [JetBrain IntelliJ IDEA Ultimate](https://www.jetbrains.com/ko-kr/idea/download/#section=mac)
 ***
 ### Version State
 
