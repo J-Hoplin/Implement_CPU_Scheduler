@@ -36,7 +36,14 @@ public abstract class Scheduler{
     // I/O IDLE Time
     private int IOIDLETime = 0;
 
-
+    //Abstract Class "Scheduler"'s Constructor
+    //Initiate Process
+    public Scheduler(int processCount,List<Integer> preprocessPCBs){
+        System.out.println("===========================");
+        System.out.println("[ Scheduler Simulator is now Running ]");
+        initiateProcess(preprocessPCBs);
+        this.processCount = processCount;
+    }
 
     // Initiate Processes for this Scheduler
     private void initiateProcess(List<Integer> preprocessPCBs){
@@ -63,13 +70,8 @@ public abstract class Scheduler{
         Collections.sort(ProcessStack);
     }
 
-    //Abstract Class "Scheduler"'s Constructor
-    //Initiate Process
-    public Scheduler(int processCount,List<Integer> preprocessPCBs){
-        System.out.println("===========================");
-        System.out.println("[ Scheduler Simulator is now Running ]");
-        initiateProcess(preprocessPCBs);
-        this.processCount = processCount;
+    protected boolean checkCPUReadyQueueEmpty(){
+        return ReadyQueueEmpty() && !cpu.CPUhasProcess();
     }
 
     protected void ReEnqueueToReadyQueue(ProcessObjects processObjects){
@@ -78,7 +80,7 @@ public abstract class Scheduler{
         processObjects.setCPUBurstIOBurstRandom();
         // ReadyQueue가 비어있고, CPU에서 Running State인 프로세스가 존재하지 않는다면
         // ReadyQueue로 가지 않고 바로 CPU에 올린다.
-        if(ReadyQueueEmpty() && !cpu.CPUhasProcess()){
+        if(checkCPUReadyQueueEmpty()){
             cpu.setProcess(processObjects);
             // 위 두 조건중 하나라도 충족 안할 시 ReadyQueue로 보낸다.
         }else{
@@ -91,7 +93,7 @@ public abstract class Scheduler{
         // 만약 CPU 관련 value들이(CPU Time, CPU Burst) 변하지 않는다고 한다면,
         if(ifCpuValuesNotChanged){
             // 만약 ReadyQueue가 비어있고, CPU에서 작동중인 프로세스가 없으면 바로 CPU에 넣어준다.
-            if(ReadyQueueEmpty() && !cpu.CPUhasProcess()){
+            if(checkCPUReadyQueueEmpty()){
                 System.out.println("Process  : " + processObjects.getPid() + " re-set to Running State. Ready Queue & CPU Running Process is empty");
                 cpu.setProcess(processObjects);
             }else{
