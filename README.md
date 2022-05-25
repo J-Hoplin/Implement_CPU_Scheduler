@@ -5,6 +5,10 @@ Source Code / Readme Written By : 윤준호(a.k.a Hoplin)
 Subject : Operating System
 
 Description : Implement CPU Scheduling. Use programming language except Script Language(Python, JavaScript...etc)
+
+Language : Java(jdk 1.8, Java 8)
+
+Tool : Intelli J Professional
 ***
 ### Version State
 
