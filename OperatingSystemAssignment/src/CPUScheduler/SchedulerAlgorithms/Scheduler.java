@@ -85,6 +85,7 @@ public abstract class Scheduler{
             ReadyQueue.add(processObjects);
         }
     }
+
     // Overloading ReEnqueToReadyQueue
     protected void ReEnqueueToReadyQueue(ProcessObjects processObjects,boolean ifCpuValuesNotChanged){
         // 만약 CPU 관련 value들이(CPU Time, CPU Burst) 변하지 않는다고 한다면,
@@ -117,16 +118,7 @@ public abstract class Scheduler{
                 addToFinishedQueue(processObjects);
                 // 아닌 경우에는 정상적으로 다시 Ready Queue에 넣는다.
             }else{
-                System.out.println("Process : " + processObjects.getPid() + " reenque to ready queue");
-                // 만약 Ready Queue도 비어있고, CPU에서 Running하고 있는 프로세스도 없다면, 해당 프로세스를 다시 레디큐에 넣지 않고 CPU에 넣는다
-                if(ReadyQueueEmpty() && !cpu.CPUhasProcess()){
-                    System.out.println("Process  : " + processObjects.getPid() + " re-set to Running State. Ready Queue & CPU Running Process is empty");
-                    cpu.setProcess(processObjects);
-                }
-                // ContextSwitching에 의해 CPU에 다른 프로세스가 있거나 Ready Queue에 프로세스가 있는 경우에는
-                else{
-                    ReEnqueueToReadyQueue(processObjects);
-                }
+                ReEnqueueToReadyQueue(processObjects);
             }
         }
         // 만약 아닌 경우, IOQueue로 들어가게 된다.
