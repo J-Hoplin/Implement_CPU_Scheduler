@@ -11,10 +11,51 @@ Description : Implement CPU Scheduling. Use programming language except Script L
 - [v 1.0.0 : Implement FCFS / SJF](https://github.com/J-hoplin1/OS_Implement_CPU_Scheduler/tree/Implement_FCFS_SJF)
     - Deprecated : 잘못된 알고리즘이 작성되어있습니다.(Process의 End Time을 I/O Time을 포함해서 연산하도록 되어있음)
 - [v 1.0.1 : Implement RR](https://github.com/J-hoplin1/OS_Implement_CPU_Scheduler/tree/Implement_Round_Robin)
+    - Not Recommended : Round Robin알고리즘에서 Time Quantum 종료에 의해서 Ready Queue로 들어갈 때 값을 유지해 주어야 하는데 이부분을 고려하지 않음
     - Todos
-        - [ ] Add CPU Utilization / I/O Utilization Algorithms
-        - [ ] Fix Scheduler Finish Time. Exclude I/O Count
-
+        - [x] Add CPU Utilization / I/O Utilization Algorithms
+            - Fetched in [version 1.0.2](https://github.com/J-hoplin1/OS_Implement_CPU_Scheduler/tree/v-1.0.2)
+        - [x] Fix Scheduler Finish Time. Exclude I/O Count
+            - Fetched in [version 1.0.2](https://github.com/J-hoplin1/OS_Implement_CPU_Scheduler/tree/v-1.0.2)
+- [v 1.0.1_alpha_1 : Implement RR](https://github.com/J-hoplin1/OS_Implement_CPU_Scheduler/tree/v-1.0.1_alpha_1)
+    - Not Recommended : 불안정
+    - v 1.0.1 Dev Version
+- [v 1.0.2 : Debug fetch_1](https://github.com/J-hoplin1/OS_Implement_CPU_Scheduler/tree/v-1.0.2)
+    - 특정 프로세스를 Ready Queue에 넣기 전에 Ready Queue가 비어있고,CPU안에서 돌아가는 프로세스가 없는 경우, 해당 프로세스를 바로 CPU로 올려야 합니다. v 1.0.1에서는 해당 부분이 적용되지 않았지만 v 1.0.2에서는 적용이 됩니다. 예제 코드는 아래와 같습니다. 이 부분의 소스코드는 약간의 하드코딩이 되어있습니다. 다음 버전에서 'ReadyQueueEmpty() && !cpu.CPUhasProcess()'를 하나의 메소드로 묶을 예정입니다.
+    ```java
+    if(ReadyQueueEmpty() && !cpu.CPUhasProcess()){
+        cpu.setProcess(processObjects);
+        // 위 두 조건중 하나라도 충족 안할 시 ReadyQueue로 보낸다.
+    }else{
+        ReadyQueue.add(processObjects);
+    }
+    ```
+    - v 1.0.1에서 있었던 Round Robin 문제를 아래와 같이 ReEnqueueToReadyQueue메소드를 Overloading하여 해결하였습니다
+    ```java
+    // Overloading ReEnqueToReadyQueue
+    protected void ReEnqueueToReadyQueue(ProcessObjects processObjects,boolean ifCpuValuesNotChanged){
+        // 만약 CPU 관련 value들이(CPU Time, CPU Burst) 변하지 않는다고 한다면,
+        if(ifCpuValuesNotChanged){
+            // 만약 ReadyQueue가 비어있고, CPU에서 작동중인 프로세스가 없으면 바로 CPU에 넣어준다.
+            if(ReadyQueueEmpty() && !cpu.CPUhasProcess()){
+                System.out.println("Process  : " + processObjects.getPid() + " re-set to Running State. Ready Queue & CPU Running Process is empty");
+                cpu.setProcess(processObjects);
+            }else{
+                // 그대로 넣는다
+                System.out.println("Process " + processObjects.getPid() + " go back to ReadyQueue Directly.");
+                System.out.println("Process left CPU Time : " + processObjects.getRemaining_cpu_time());
+                System.out.println("Process left CPU Burst Time : " + processObjects.getRemaining_cpu_burst());
+                ReadyQueue.add(processObjects);
+            }
+        }
+        // 변해야하는 경우에는 기존 ReEnqueueToReadyQueue()메소드를 그대로 사용
+        else{
+            ReEnqueueToReadyQueue(processObjects);
+        }
+    }
+    ```
+    - I/O Utilization, CPU Utilization, Throughput in processes completed per hundered time units 연산 알고리즘을 적용하였습니다.
+    
 ***
 ### Assignment Description
 이 과제에서는 CPU scheduling 알고리즘에 따라 여러 가지 성능수치가 어떻게 달라지는가를 관찰하기 위한 시뮬레이션을 수행한다. 시뮬레이션 프로그램이 수행해야 할 가장 기본적인 작업은 computation과 I/O 요청을 번갈아 수행하는 process들에 대해 CPU scheduling을 수행하는 것이다. 이를 위해 다음과 같이 간단한 가정을 한다. 
