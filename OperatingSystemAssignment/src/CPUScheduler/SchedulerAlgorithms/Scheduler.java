@@ -73,11 +73,16 @@ public abstract class Scheduler{
     }
 
     protected void ReEnqueueToReadyQueue(ProcessObjects processObjects){
+        //프로세스 객체들의 CPU Burst, IOBurst를 다시 랜덤값으로 초기화한다.
         processObjects.setArrivalTime(SchedulerTotalRunningTime);
         processObjects.setCPUBurstIOBurstRandom();
-        ReadyQueue.add(processObjects);
+        if(ReadyQueueEmpty() && !cpu.CPUhasProcess()){
+            cpu.setProcess(processObjects);
+        }else{
+            ReadyQueue.add(processObjects);
+        }
     }
-
+    // Overloading ReEnqueToReadyQueue
     protected void ReEnqueueToReadyQueue(ProcessObjects processObjects,boolean ifCpuValuesNotChanged){
         // 만약 CPU 관련 value들이(CPU Time, CPU Burst) 변하지 않는다고 한다면,
         if(ifCpuValuesNotChanged){
@@ -97,7 +102,6 @@ public abstract class Scheduler{
         else{
             ReEnqueueToReadyQueue(processObjects);
         }
-
     }
 
     public void EnqueToIOQueue(ProcessObjects processObjects){
@@ -194,7 +198,7 @@ public abstract class Scheduler{
             for(ProcessObjects p : ReadyQueue){
                 e.add(p.getPid());
             }
-            System.out.println("Ready Queue : " + String.join("->",e));
+            System.out.println(String.join("->",e));
         }
         e.clear();
         System.out.println("( I/O Queue )");
@@ -203,6 +207,8 @@ public abstract class Scheduler{
             System.out.println("No other process is blocked state");
         }else{
             for(ProcessObjects p : IOQueue){
+                //Debugging Comment
+                //System.out.println(p.getRemaining_cpu_time() + " " + p.getRemaining_cpu_burst() + " " + p.getRemaining_io_burst());
                 e.add(p.getPid());
             }
             System.out.println(String.join("->",e));
@@ -274,10 +280,14 @@ public abstract class Scheduler{
                 q.add(processObjects);
             }
         }
+        //I/O작업이 끝난 프로세스들에 대해서
         for(ProcessObjects processObjects : q){
+            // CPU Time이 0 이하인 경우 -> 종료된 프로세스
             if(processObjects.getRemaining_cpu_time() <= 0){
+                System.out.println(processObjects.getPid());
                 processObjects.setFinishedTime(SchedulerTotalRunningTime);
                 addToFinishedQueue(processObjects);
+                // CPU Time이 1이상 -> 아직 작동중인 프로세스
             }else{
                 ReEnqueueToReadyQueue(processObjects);
             }
