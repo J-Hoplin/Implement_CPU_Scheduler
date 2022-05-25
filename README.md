@@ -12,9 +12,9 @@ Tool : [JetBrain IntelliJ IDEA Ultimate](https://www.jetbrains.com/ko-kr/idea/do
 ***
 ### Version State
 
-- [v 1.0.0 : Implement FCFS / SJF](https://github.com/J-hoplin1/OS_Implement_CPU_Scheduler/tree/Implement_FCFS_SJF)
+- [v 1.0.0 : Implement FCFS / SJF : 2022/05/22](https://github.com/J-hoplin1/OS_Implement_CPU_Scheduler/tree/Implement_FCFS_SJF)
     - Deprecated : 잘못된 알고리즘이 작성되어있습니다.(Process의 End Time을 I/O Time을 포함해서 연산하도록 되어있음)
-- [v 1.0.1 : Implement RR](https://github.com/J-hoplin1/OS_Implement_CPU_Scheduler/tree/Implement_Round_Robin)
+- [v 1.0.1 : Implement RR : 2022/05/23](https://github.com/J-hoplin1/OS_Implement_CPU_Scheduler/tree/Implement_Round_Robin)
     - Not Recommended : Round Robin알고리즘에서 Time Quantum 종료에 의해서 Ready Queue로 들어갈 때 값을 유지해 주어야 하는데 이부분을 고려하지 않음
     - Todos
         - [x] Add CPU Utilization / I/O Utilization Algorithms
@@ -24,7 +24,7 @@ Tool : [JetBrain IntelliJ IDEA Ultimate](https://www.jetbrains.com/ko-kr/idea/do
 - [v 1.0.1_alpha_1 : Implement RR](https://github.com/J-hoplin1/OS_Implement_CPU_Scheduler/tree/v-1.0.1_alpha_1)
     - Not Recommended : 불안정
     - v 1.0.1 Dev Version
-- [v 1.0.2 : Debug fetch_1](https://github.com/J-hoplin1/OS_Implement_CPU_Scheduler/tree/v-1.0.2)
+- [v 1.0.2 : Debug fetch_1 : 2022/05/25](https://github.com/J-hoplin1/OS_Implement_CPU_Scheduler/tree/v-1.0.2)
     - 특정 프로세스를 Ready Queue에 넣기 전에 Ready Queue가 비어있고,CPU안에서 돌아가는 프로세스가 없는 경우, 해당 프로세스를 바로 CPU로 올려야 합니다. v 1.0.1에서는 해당 부분이 적용되지 않았지만 v 1.0.2에서는 적용이 됩니다. 예제 코드는 아래와 같습니다. 이 부분의 소스코드는 약간의 하드코딩이 되어있습니다. 다음 버전에서 'ReadyQueueEmpty() && !cpu.CPUhasProcess()'를 하나의 메소드로 묶을 예정입니다.
     ```java
     if(ReadyQueueEmpty() && !cpu.CPUhasProcess()){
@@ -59,7 +59,7 @@ Tool : [JetBrain IntelliJ IDEA Ultimate](https://www.jetbrains.com/ko-kr/idea/do
     }
     ```
     - I/O Utilization, CPU Utilization, Throughput in processes completed per hundered time units 연산 알고리즘을 적용하였습니다.
-- [v 1.0.3](https://github.com/J-hoplin1/OS_Implement_CPU_Scheduler/tree/v_1.0.3) : main
+- [v 1.0.3 : 2022/05/25](https://github.com/J-hoplin1/OS_Implement_CPU_Scheduler/tree/v_1.0.3) : [main](https://github.com/J-hoplin1/OS_Implement_CPU_Scheduler)
     - 'ReadyQueueEmpty() && !cpu.CPUhasProcess()'를 하나의 메소드로 묶었습니다
 ***
 ### Assignment Description
