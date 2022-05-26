@@ -9,6 +9,8 @@ Description : Implement CPU Scheduling. Use programming language except Script L
 Language : Java(jdk 1.8, Java 8)
 
 Tool : [JetBrain IntelliJ IDEA Ultimate](https://www.jetbrains.com/ko-kr/idea/download/#section=mac)
+
+[운영체제 프로세스 스케줄링 관련 정리 PDF](https://github.com/J-hoplin1/OS_Implement_CPU_Scheduler/blob/main/Cpu%20Scheduler.pdf) : [Download](https://github.com/J-hoplin1/OS_Implement_CPU_Scheduler/raw/main/Cpu%20Scheduler.pdf)
 ***
 ### Class Diagram
 ![image](https://user-images.githubusercontent.com/45956041/170363813-d3e10146-415b-460a-b4d8-81e27951ff86.png)
