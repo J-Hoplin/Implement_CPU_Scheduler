@@ -1,6 +1,17 @@
 package CPUScheduler.Configurations;
 
+import java.util.Locale;
+
 public class FixedVariables {
+    // Stataic Initiatlize Block
+    static {
+        String os = System.getProperty("os.name").toLowerCase();
+        if(os.contains("Windows")){
+            RootDirectory = System.getProperty("user.dir") + "\\CPUScheduler\\";
+        }else if(os.contains("mac") || os.contains("nix") || os.contains("linux")){
+            RootDirectory = System.getProperty("user.dir") + "/CPUScheduler/";
+        }
+    }
 
     // Exit Program
     public static void ExitProgram(){
@@ -8,7 +19,7 @@ public class FixedVariables {
     }
 
     // Root Directory
-    public static String RootDirectory = System.getProperty("user.dir") + "/src/CPUScheduler/";
+    public static String RootDirectory;
 
     public static void ConsolePrintFileWriteParellel(Object msg){
         System.out.println(msg);

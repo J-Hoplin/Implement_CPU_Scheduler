@@ -42,7 +42,7 @@ public class SimulationStream {
 
     // Check arguments array and initiate Scheduler;
     private void selectScheduler(String[] args,List<Integer> preprocessPCBs){
-        String schedulerField = args[1];
+        String schedulerField = args[1].toUpperCase();
         switch (schedulerField){
             case "FCFS":
                 scheduler = new FistComeFirstServed(ProcessCount,preprocessPCBs);
