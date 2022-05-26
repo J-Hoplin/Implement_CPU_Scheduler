@@ -76,18 +76,16 @@ Tool : [JetBrain IntelliJ IDEA Ultimate](https://www.jetbrains.com/ko-kr/idea/do
 - [v 1.0.4 : 2022/05/27](https://github.com/J-hoplin1/OS_Implement_CPU_Scheduler/tree/v_1.0.4) : [main](https://github.com/J-hoplin1/OS_Implement_CPU_Scheduler)
     - 실행되는 플랫폼에 따라 절대경로 지정을 달리하였습니다.
     ```java
-    // Stataic Initiatlize Block
-    static {
+    public static String getRootDirectory(){
+        String RootDirectory = System.getProperty("user.dir");
         String os = System.getProperty("os.name").toLowerCase();
-        if(os.contains("Windows")){
-            RootDirectory = System.getProperty("user.dir") + "\\CPUScheduler\\";
+        if(os.contains("windows")){
+            RootDirectory += "\\CPUScheduler\\";
         }else if(os.contains("mac") || os.contains("nix") || os.contains("linux")){
-            RootDirectory = System.getProperty("user.dir") + "/CPUScheduler/";
+            RootDirectory +="/CPUScheduler/";
         }
+        return RootDirectory;
     }
-
-    // some other codes //
-    public static String RootDirectory;
     ```
     - 커맨드 실행시 매개변수로 파일 이름과 알고리즘 이름을 적어줍니다. 알고리즘 이름을 기존에는 모두 대문자로 입력해야했지만, 소문자로 입력해도 실행되도록 변경하였습니다.(String toUpper 적용)
 ***
