@@ -13,7 +13,7 @@ Tool : [JetBrain IntelliJ IDEA Ultimate](https://www.jetbrains.com/ko-kr/idea/do
 [운영체제 프로세스 스케줄링 관련 정리 PDF](https://github.com/J-hoplin1/OS_Implement_CPU_Scheduler/blob/main/Cpu%20Scheduler.pdf) : [Download](https://github.com/J-hoplin1/OS_Implement_CPU_Scheduler/raw/main/Cpu%20Scheduler.pdf)
 ***
 ### Class Diagram
-![image](https://user-images.githubusercontent.com/45956041/170594572-9c49e239-3fe7-4899-a855-b7b5eb3e4553.png)
+<img width="1249" alt="image" src="https://user-images.githubusercontent.com/45956041/170594703-3f29e421-7833-4835-9883-f478c83e5a8c.png">
 
 ***
 ### Version State
