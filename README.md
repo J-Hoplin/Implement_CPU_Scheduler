@@ -6,7 +6,7 @@ Subject : Operating System
 
 Description : Implement CPU Scheduling. Use programming language except Script Language(Python, JavaScript...etc)<br>
 
-Language : Java(jdk 1.8, Java 11)
+Language : Java(jdk 1.8(Zulu Open JDK 11.04), Java 11)
 
 Tool : [JetBrain IntelliJ IDEA Ultimate](https://www.jetbrains.com/ko-kr/idea/download/#section=mac)
 
