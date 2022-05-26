@@ -139,7 +139,7 @@ public abstract class Scheduler{
         printProcessList();
         System.out.println("===========================");
         System.out.println("Simulation will start in 5second");
-        FixedVariables.BreakConsole(5000);
+        //FixedVariables.BreakConsole(5000);
     }
 
     // Overloading
@@ -152,7 +152,7 @@ public abstract class Scheduler{
         printProcessList();
         System.out.println("===========================");
         System.out.println("Simulation will start in 5second");
-        FixedVariables.BreakConsole(5000);
+        //FixedVariables.BreakConsole(5000);
     }
 
     protected void addToFinishedQueue(ProcessObjects process){

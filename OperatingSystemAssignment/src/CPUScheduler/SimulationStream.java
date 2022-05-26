@@ -78,10 +78,10 @@ public class SimulationStream {
         } catch (FileNotFoundException e){
             try {
                 // 실행 디렉토리내에서 파일 탐색
-                br = new BufferedReader(new FileReader(FixedVariables.RootDirectory + args[0]));
+                br = new BufferedReader(new FileReader(FixedVariables.getRootDirectory() + args[0]));
                 testcase = br.readLine();
             } catch (FileNotFoundException ex) {
-                System.out.println(FixedVariables.RootDirectory + args[0]);
+                System.out.println(FixedVariables.getRootDirectory() + args[0]);
                 // File Not Found Block
                 System.out.println(new StringBuilder().append("File '").append(args[0]).append("' not exist.").toString());
                 FixedVariables.ExitProgram();

@@ -15,7 +15,7 @@ public class CommandUtilities {
 
     private static void printManPage(){
         try {
-            BufferedReader br = new BufferedReader(new FileReader(FixedVariables.RootDirectory + "help.txt"));
+            BufferedReader br = new BufferedReader(new FileReader(FixedVariables.getRootDirectory() + "help.txt"));
             String line = "";
             while(true){
                 try {
