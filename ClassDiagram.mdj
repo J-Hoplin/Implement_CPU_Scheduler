@@ -4194,6 +4194,7 @@
 											"top": 1709,
 											"width": 254.4267578125,
 											"height": 13,
+											"underline": true,
 											"text": "+getRootDirectory(): String",
 											"horizontalAlignment": 0
 										}
@@ -10136,6 +10137,7 @@
 								"$ref": "AAAAAAGA/NsXLqTK1O4="
 							},
 							"name": "getRootDirectory",
+							"isStatic": true,
 							"parameters": [
 								{
 									"_type": "UMLParameter",
