@@ -12,7 +12,7 @@ public class FixedVariables {
     public static String getRootDirectory(){
         String RootDirectory = System.getProperty("user.dir");
         String os = System.getProperty("os.name").toLowerCase();
-        if(os.contains("Windows")){
+        if(os.contains("windows")){
             RootDirectory += "\\CPUScheduler\\";
         }else if(os.contains("mac") || os.contains("nix") || os.contains("linux")){
             RootDirectory +="/CPUScheduler/";
