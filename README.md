@@ -12,6 +12,15 @@ Tool : [JetBrain IntelliJ IDEA Ultimate](https://www.jetbrains.com/ko-kr/idea/do
 
 [운영체제 프로세스 스케줄링 관련 정리 PDF](https://github.com/J-hoplin1/OS_Implement_CPU_Scheduler/blob/main/Cpu%20Scheduler.pdf) : [Download](https://github.com/J-hoplin1/OS_Implement_CPU_Scheduler/raw/main/Cpu%20Scheduler.pdf)
 ***
+### Contents Shortcut
+
+[1. How to use?](https://github.com/J-hoplin1/OS_Implement_CPU_Scheduler#how-to-use)
+[2. Class Diagram](https://github.com/J-hoplin1/OS_Implement_CPU_Scheduler#how-to-use)
+[3. Version State](https://github.com/J-hoplin1/OS_Implement_CPU_Scheduler#how-to-use)
+[4. Assignment Description](https://github.com/J-hoplin1/OS_Implement_CPU_Scheduler#assignment-description)
+
+
+***
 ### How to use
 
 ```
