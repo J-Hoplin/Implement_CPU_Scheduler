@@ -22,8 +22,10 @@ public abstract class Scheduler{
     // IO Stated Queue : Blocking state
     protected LinkedList<ProcessObjects> IOQueue = new LinkedList<>();
 
-    // 스케줄러 전체 작동 시간을 의미한다.
+    // 스케줄러 전체 작동 시간을 의미한다. 여기서 스케줄러는 이 시뮬레이터 자체를 의미한다.
     protected int SchedulerTotalRunningTime = 0;
+    // 순수 Scheduler의 Running Time : 마지막 프로세스의 IO Burst를 빼줘야됨.
+    protected int SchedulerTotalRunningTimeCPUSchedulePerspective;
     //Total Process Count
     private final int processCount;
     // CPU Instance
@@ -329,6 +331,7 @@ public abstract class Scheduler{
              결국 스케줄러의 총 Running Time은 마지막 Finish 프로세스의 Finish Time과 동일해야 한다.
              */
             SchedulerTotalRunningTime = finishedQueue.getLast().getFinishedTime();
+            SchedulerTotalRunningTimeCPUSchedulePerspective =  SchedulerTotalRunningTime - finishedQueue.getLast().getIOBurstTime();
             printSummary();
             FixedVariables.ExitProgram();
         }
@@ -377,7 +380,7 @@ public abstract class Scheduler{
         }
 
         System.out.println(CalculateLines("[ Summary of Scheduler ]"));
-        System.out.println("Scheduler Finishing Time : " + SchedulerTotalRunningTime);
+        System.out.println("Scheduler Finishing Time : " + SchedulerTotalRunningTimeCPUSchedulePerspective);
         System.out.println("Average turnaround time : " + (totalTurnAroundTimeProcesses / processCount));
         System.out.println("Average waiting time : " + (totalWaitingTimeProcesses / processCount));
         System.out.println("CPU Utilization : " + returnCPUUtilization());
