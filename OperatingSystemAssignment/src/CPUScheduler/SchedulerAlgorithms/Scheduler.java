@@ -24,8 +24,6 @@ public abstract class Scheduler{
 
     // 스케줄러 전체 작동 시간을 의미한다. 여기서 스케줄러는 이 시뮬레이터 자체를 의미한다.
     protected int SchedulerTotalRunningTime = 0;
-    // 순수 Scheduler의 Running Time : 마지막 프로세스의 IO Burst를 빼줘야됨.
-    protected int SchedulerTotalRunningTimeCPUSchedulePerspective;
     //Total Process Count
     private final int processCount;
     // CPU Instance
@@ -113,17 +111,16 @@ public abstract class Scheduler{
     }
 
     public void EnqueToIOQueue(ProcessObjects processObjects){
+        //프로세스의 CPU Time이 0이된 순간에는 더이상 IO가 발생하지 않는다. 그렇기 때문에, 바로 Finish Queue로 넣어준다.
+        if(processObjects.getRemaining_cpu_time() <= 0){
+            processObjects.setFinishedTime(SchedulerTotalRunningTime);
+            addToFinishedQueue(processObjects);
+        }
+        // CPU Time은 0보다 크다
         // 만약 프로세스의 전체 IO Burst가 0보다 작거나 같으면 IO Queue로 안들어 가고 ReadyQueue로 가게 된다
         // IO Burst가 0이하인 프로세스에 대해서
-        if(processObjects.getIOBurstTime() <= 0){
-            // 만약 CPU Time이 끝난 프로세스라면 finish queue 로
-            if(processObjects.getRemaining_cpu_time() <= 0){
-                processObjects.setFinishedTime(SchedulerTotalRunningTime);
-                addToFinishedQueue(processObjects);
-                // 아닌 경우에는 정상적으로 다시 Ready Queue에 넣는다.
-            }else{
-                ReEnqueueToReadyQueue(processObjects);
-            }
+        else if(processObjects.getIOBurstTime() <= 0){
+            ReEnqueueToReadyQueue(processObjects);
         }
         // 만약 아닌 경우, IOQueue로 들어가게 된다.
         else{
@@ -331,7 +328,6 @@ public abstract class Scheduler{
              결국 스케줄러의 총 Running Time은 마지막 Finish 프로세스의 Finish Time과 동일해야 한다.
              */
             SchedulerTotalRunningTime = finishedQueue.getLast().getFinishedTime();
-            SchedulerTotalRunningTimeCPUSchedulePerspective =  SchedulerTotalRunningTime - finishedQueue.getLast().getIOBurstTime();
             printSummary();
             FixedVariables.ExitProgram();
         }
@@ -380,9 +376,9 @@ public abstract class Scheduler{
         }
 
         System.out.println(CalculateLines("[ Summary of Scheduler ]"));
-        System.out.println("Scheduler Finishing Time : " + SchedulerTotalRunningTimeCPUSchedulePerspective);
-        System.out.println("Average turnaround time : " + (totalTurnAroundTimeProcesses / processCount));
-        System.out.println("Average waiting time : " + (totalWaitingTimeProcesses / processCount));
+        System.out.println("Scheduler Finishing Time : " + SchedulerTotalRunningTime);
+        System.out.println("Average turnaround time : " + String.format("%.2f",((float)totalTurnAroundTimeProcesses / (float) processCount)));
+        System.out.println("Average waiting time : " + String.format("%.2f",((float)totalWaitingTimeProcesses / (float) processCount)));
         System.out.println("CPU Utilization : " + returnCPUUtilization());
         System.out.println("I/O Utilization : " + returnIOUtilization());
         System.out.println("Throughput in processes completed per hundred time units : " + returnThroughPutInProcessCompletedPerHundredTimeUnit());
