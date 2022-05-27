@@ -91,7 +91,7 @@ $ java CPUScheduler/SchedulerMain --help
     }
     ```
 
-- [v 1.0.4 : 2022/05/27](https://github.com/J-hoplin1/OS_Implement_CPU_Scheduler/tree/v_1.0.4) : [main](https://github.com/J-hoplin1/OS_Implement_CPU_Scheduler)
+- [v 1.0.4 : 2022/05/27](https://github.com/J-hoplin1/OS_Implement_CPU_Scheduler/tree/v_1.0.4)
     - 실행되는 플랫폼에 따라 절대경로 지정을 달리하였습니다.
     ```java
     public static String getRootDirectory(){
