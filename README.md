@@ -15,8 +15,8 @@ Tool : [JetBrain IntelliJ IDEA Ultimate](https://www.jetbrains.com/ko-kr/idea/do
 ### Contents Shortcut
 
 [1. How to use?](https://github.com/J-hoplin1/OS_Implement_CPU_Scheduler#how-to-use)<br>
-[2. Class Diagram](https://github.com/J-hoplin1/OS_Implement_CPU_Scheduler#how-to-use)<br>
-[3. Version State](https://github.com/J-hoplin1/OS_Implement_CPU_Scheduler#how-to-use)<br>
+[2. Class Diagram](https://github.com/J-hoplin1/OS_Implement_CPU_Scheduler#class-diagram)<br>
+[3. Version State](https://github.com/J-hoplin1/OS_Implement_CPU_Scheduler#version-state)<br>
 [4. Assignment Description](https://github.com/J-hoplin1/OS_Implement_CPU_Scheduler#assignment-description)
 
 
