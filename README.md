@@ -109,7 +109,7 @@ $ java CPUScheduler/SchedulerMain --help
 
 - [v 1.0.5](https://github.com/J-hoplin1/OS_Implement_CPU_Scheduler/tree/v-1.0.5)
     - Minor Bug Fix : 알고리즘 성능, 구조에 영향을 주지 않는 버그 
-- [v 1.1.0](https://github.com/J-hoplin1/OS_Implement_CPU_Scheduler/tree/v-1.1.0)
+- [v 1.1.0](https://github.com/J-hoplin1/OS_Implement_CPU_Scheduler/tree/v-1.1.0) : **해당 버전의 코드로 과제 제출**
     - Scheduler Summary에서 Average Turnaround, Average Waiting에 대해 소수점 둘째자리까지 표시되게끔 변경하였습니다.
     - Logic Error : 프로세스가 마지막 CPU Burst가 끝난 다음, IO Burst가 일어나지 않는다는 점을 모르고 있었습니다. 이 내용을 알고리즘에 적용시켰습니다.
     ```java
