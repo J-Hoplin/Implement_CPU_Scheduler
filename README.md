@@ -106,6 +106,9 @@ $ java CPUScheduler/SchedulerMain --help
     }
     ```
     - 커맨드 실행시 매개변수로 파일 이름과 알고리즘 이름을 적어줍니다. 알고리즘 이름을 기존에는 모두 대문자로 입력해야했지만, 소문자로 입력해도 실행되도록 변경하였습니다.(String toUpper 적용)
+
+- [v 1.0.5](https://github.com/J-hoplin1/OS_Implement_CPU_Scheduler/tree/v-1.0.5)
+    - Minor Bug Fix : 알고리즘 성능, 구조에 영향을 주지 않는 버그 
 ***
 ### Assignment Description
 이 과제에서는 CPU scheduling 알고리즘에 따라 여러 가지 성능수치가 어떻게 달라지는가를 관찰하기 위한 시뮬레이션을 수행한다. 시뮬레이션 프로그램이 수행해야 할 가장 기본적인 작업은 computation과 I/O 요청을 번갈아 수행하는 process들에 대해 CPU scheduling을 수행하는 것이다. 이를 위해 다음과 같이 간단한 가정을 한다. 
