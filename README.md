@@ -1,4 +1,4 @@
-# Implement CPU Scheduler Algorithm
+# Implement CPU Scheduling Algorithm
 ***
 Source Code / Readme Written By : 윤준호(a.k.a Hoplin)
 
