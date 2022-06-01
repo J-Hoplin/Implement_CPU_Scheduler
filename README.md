@@ -34,6 +34,9 @@ $ java CPUScheduler/SchedulerMain --help
 <img width="1249" alt="image" src="https://user-images.githubusercontent.com/45956041/170594703-3f29e421-7833-4835-9883-f478c83e5a8c.png">
 
 ***
+### TODO
+- [ ] Template Method Pattern 적용하기  
+***
 ### Version State
 
 - [v 1.1.0](https://github.com/J-hoplin1/OS_Implement_CPU_Scheduler/tree/v-1.1.0) : **해당 버전의 코드로 과제 제출**
