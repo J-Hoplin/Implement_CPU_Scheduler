@@ -41,7 +41,7 @@ $ java CPUScheduler/SchedulerMain --help
 
 - [v 1.1.0](https://github.com/J-hoplin1/OS_Implement_CPU_Scheduler/tree/v-1.1.0) : **해당 버전의 코드로 과제 제출**
     - Scheduler Summary에서 Average Turnaround, Average Waiting에 대해 소수점 둘째자리까지 표시되게끔 변경하였습니다.
-    - Logic Error : 프로세스가 마지막 CPU Burst가 끝난 다음, IO Burst가 일어나지 않는다는 점을 모르고 있었습니다. 이 내용을 알고리즘에 적용시켰습니다.
+    - Logic Error : 프로세스가 마지막 CPU Burst가 끝난 다음, IO Burst가 일어나지 않는다는 점을 깜빡하고 있었습니다. 이 내용을 알고리즘에 적용시켰습니다.
     ```java
     public void EnqueToIOQueue(ProcessObjects processObjects){
         //프로세스의 CPU Time이 0이된 순간에는 더이상 IO가 발생하지 않는다. 그렇기 때문에, 바로 Finish Queue로 넣어준다.
