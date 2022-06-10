@@ -23,6 +23,11 @@ Tool : [JetBrain IntelliJ IDEA Ultimate](https://www.jetbrains.com/ko-kr/idea/do
 ***
 ### How to use
 
+Required Spec
+
+- Java : Java 8 or Upper
+- JDK
+
 ```
 $ git clone https://github.com/J-hoplin1/OS_Implement_CPU_Scheduler.git
 $ cd OS_Implement_CPU_Scheduler/OperatingSystemAssignment/src
