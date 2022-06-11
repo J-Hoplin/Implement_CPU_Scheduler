@@ -118,10 +118,36 @@ $ java CPUScheduler/SchedulerMain --help
 
 #### Results
 
-위 테스트 케이스에서 1,2,3번 케이스는 정답이 고정되어있습니다.(FCFS,SJF,RR모두 동일한 값이 나와야함)
+위 테스트 케이스에서 1,2,3번 케이스는 정답이 고정되어있습니다.(FCFS,SJF,RR모두 동일한 값이 나와야함) 4,5번은 I/O 랜덤값으로 인해 값이 달라질 수 있습니다.
 
 - Case 1
-
+```
+============= [ Summary of Scheduler ] =============
+Scheduler Finishing Time : 5
+Average turnaround time : 5.00
+Average waiting time : 0.00
+CPU Utilization : 100.00 %
+I/O Utilization : 0.00 %
+Throughput in processes completed per hundred time units : 20.00 %
+```
 - Case 2
-
+```
+============= [ Summary of Scheduler ] =============
+Scheduler Finishing Time : 9
+Average turnaround time : 9.00
+Average waiting time : 0.00
+CPU Utilization : 55.56 %
+I/O Utilization : 44.44 %
+Throughput in processes completed per hundred time units : 11.11 %
+```
 - Case 3
+
+```
+============= [ Summary of Scheduler ] =============
+Scheduler Finishing Time : 15
+Average turnaround time : 12.67
+Average waiting time : 3.67
+CPU Utilization : 100.00 %
+I/O Utilization : 80.00 %
+Throughput in processes completed per hundred time units : 20.00 %
+```
