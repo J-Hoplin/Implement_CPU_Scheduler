@@ -49,7 +49,14 @@ $ java CPUScheduler/SchedulerMain --help
 - Log기능 강화
     Logging 기능이 강화되었습니다. 모든 콘솔 출력에 대한 코드는 v 2.0.0에서 새로 추가된 [Logger.Log](https://github.com/J-hoplin1/OS_Implement_CPU_Scheduler/tree/main/OperatingSystemAssignment/src/CPUScheduler/Logger)에 의해서 이루어 집니다. 이제 실행 후 실행 결과를 Log File로 자동으로 저장합니다(text파일). 저장 기능의 On/Off는 이 과제의 매개변수 조건을 준수하기 위해서 추가하지 않을 예정입니다.
 
+- 예외 클래스 추가
+    이제 Java의 기본 예외 클래스 이외의 자체 예외 클래스를 추가할 예정입니다. 자체 예외 클래스는 [Exceptions 패키지](https://github.com/J-hoplin1/OS_Implement_CPU_Scheduler/tree/main/OperatingSystemAssignment/src/CPUScheduler/Exceptions)에 추가됩니다. 이번 버전에서는 아래와 같은 예외들이 추가되었습니다
+    
+    - IllegalCPUBurstException : 잘못된 CPU Burst값에 대한 예외입니다.
 
+    - IllegalIOBurstException : 잘못된 IO Burst값에 대한 예외입니다
+
+    - IllegalMethodCallException : 잘못된 메소드 호출에 대한 예외입니다.
 ***
 ### Assignment Description
 이 과제에서는 CPU scheduling 알고리즘에 따라 여러 가지 성능수치가 어떻게 달라지는가를 관찰하기 위한 시뮬레이션을 수행한다. 시뮬레이션 프로그램이 수행해야 할 가장 기본적인 작업은 computation과 I/O 요청을 번갈아 수행하는 process들에 대해 CPU scheduling을 수행하는 것이다. 이를 위해 다음과 같이 간단한 가정을 한다. 
