@@ -1,9 +1,9 @@
 package CPUScheduler.SchedulerAlgorithms;
 
 import CPUScheduler.Configurations.FixedVariables;
-import CPUScheduler.Processor.ProcessObjects;
+import CPUScheduler.Logger.Log;
+import CPUScheduler.Process.ProcessObjects;
 
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -47,7 +47,7 @@ public class ShortestJobFirst extends Scheduler{
     @Override
     public void Algorithm() {
         while (true){
-            System.out.println("[ Log at time : " + SchedulerTotalRunningTime + " ]");
+            Log.Logger("[ Log at time : " + SchedulerTotalRunningTime + " ]");
             IntegratedInitialJobPerEachCircular();
             /// Logic ///
             //System.out.println(cpu.getProcess());
@@ -64,7 +64,7 @@ public class ShortestJobFirst extends Scheduler{
                             if(!ReadyQueueEmpty()){
                                 ProcessObjects nextProcess = selectNextProcess();
                                 if(nextProcess.getRemaining_cpu_burst() <= 0){
-                                    FixedVariables.ConsolePrintFileWriteParellel("Process " + nextProcess.getPid() + " selected but go to IOQueueChecker due to " + nextProcess.getRemaining_cpu_burst() + " burst time");
+                                    Log.Logger("Process " + nextProcess.getPid() + " selected but go to IOQueueChecker due to " + nextProcess.getRemaining_cpu_burst() + " burst time");
                                     EnqueToIOQueue(nextProcess);
                                 }else{
                                     p = dispatcher.ContextSwitching(cpu,nextProcess);
@@ -84,7 +84,7 @@ public class ShortestJobFirst extends Scheduler{
                 }
                 // 아닌 경우에는 넘긴다.
                 else{
-                    System.out.println("Process : " + cpu.getProcess().getPid() + " is now Running!");
+                    Log.Logger("Process : " + cpu.getProcess().getPid() + " is now Running!");
                 }
             }
             //CPU안에서 돌아가는 프로세스가 없다면
@@ -98,7 +98,7 @@ public class ShortestJobFirst extends Scheduler{
                             ProcessObjects nextProcess = selectNextProcess();
                             // 해당 프로세스의 CPU Burst값이 0보다 작거나 같으면 IO Queue에 넣는 검사과정을 거친다.
                             if(nextProcess.getRemaining_cpu_burst() <= 0){
-                                FixedVariables.ConsolePrintFileWriteParellel("Process " + nextProcess.getPid() + " selected but go to IOQueueChecker due to " + nextProcess.getRemaining_cpu_burst() + " burst time");
+                                Log.Logger("Process " + nextProcess.getPid() + " selected but go to IOQueueChecker due to " + nextProcess.getRemaining_cpu_burst() + " burst time");
                                 EnqueToIOQueue(nextProcess);
                                 // 0보다 큰 경우에는 CPU의 프로세스로 세팅한다.
                             }else{

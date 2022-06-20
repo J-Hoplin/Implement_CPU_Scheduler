@@ -1,6 +1,7 @@
 package CPUScheduler.CPU;
 
-import CPUScheduler.Processor.ProcessObjects;
+import CPUScheduler.Logger.Log;
+import CPUScheduler.Process.ProcessObjects;
 
 
 // Basic class of containing cpu principle
@@ -24,7 +25,7 @@ public class CPU {
     }
 
     public void setProcess(ProcessObjects processObjects){
-        System.out.println("Process " + processObjects.getPid() + " state changed to running state");
+        Log.Logger("Process : " + processObjects.getPid() + " state changed to running state");
         this.process = processObjects;
     }
 

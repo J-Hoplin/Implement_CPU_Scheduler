@@ -20,10 +20,6 @@ public class FixedVariables {
         return RootDirectory;
     }
 
-    public static void ConsolePrintFileWriteParellel(Object msg){
-        System.out.println(msg);
-    }
-
     public static void BreakConsole(int millisecond){
         try{
             Thread.sleep(millisecond);

@@ -2,7 +2,7 @@ package CPUScheduler;
 
 import CPUScheduler.Configurations.FixedVariables;
 import CPUScheduler.Configurations.SchedulerTypes;
-import CPUScheduler.Processor.ProcessObjects;
+import CPUScheduler.Process.ProcessObjects;
 import CPUScheduler.SchedulerAlgorithms.FistComeFirstServed;
 import CPUScheduler.SchedulerAlgorithms.RoundRobin;
 import CPUScheduler.SchedulerAlgorithms.Scheduler;

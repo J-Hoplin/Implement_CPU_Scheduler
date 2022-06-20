@@ -1,9 +1,9 @@
 package CPUScheduler.SchedulerAlgorithms;
 
 import CPUScheduler.Configurations.FixedVariables;
-import CPUScheduler.Processor.ProcessObjects;
+import CPUScheduler.Logger.Log;
+import CPUScheduler.Process.ProcessObjects;
 
-import java.util.Arrays;
 import java.util.List;
 
 /*
@@ -29,7 +29,7 @@ public class FistComeFirstServed extends Scheduler{
     @Override
     public void Algorithm() {
         while(true){
-            System.out.println("[ Log at time : " + SchedulerTotalRunningTime + " ]");
+            Log.Logger("[ Log at time : " + SchedulerTotalRunningTime + " ]");
             IntegratedInitialJobPerEachCircular();
             /// Logic ///
             //System.out.println(cpu.getProcess());
@@ -51,7 +51,7 @@ public class FistComeFirstServed extends Scheduler{
                                 // 꺼낸 프로세스의 CPU Burst가 0이하인 경우
                                 // IOQueue 삽입 검사 함수에 넘긴다.
                                 if(nextProcess.getRemaining_cpu_burst() <= 0){
-                                    FixedVariables.ConsolePrintFileWriteParellel("Process " + nextProcess.getPid() + " selected but go to IOQueueChecker due to " + nextProcess.getRemaining_cpu_burst() + " burst time");
+                                    Log.Logger("Process " + nextProcess.getPid() + " selected but go to IOQueueChecker due to " + nextProcess.getRemaining_cpu_burst() + " burst time");
                                     EnqueToIOQueue(nextProcess);
                                     // 꺼낸 프로세스의 CPU Burst가 0 초과인 경우
                                     // Context Swithching 진행
@@ -76,7 +76,7 @@ public class FistComeFirstServed extends Scheduler{
                 }
                 // 아닌 경우에는 넘긴다.
                 else{
-                    System.out.println("Process : " + cpu.getProcess().getPid() + " is now Running!");
+                    Log.Logger("Process : " + cpu.getProcess().getPid() + " is now Running!");
                 }
             }
             //CPU안에서 돌아가는 프로세스가 없다면
@@ -90,7 +90,7 @@ public class FistComeFirstServed extends Scheduler{
                             ProcessObjects nextProcess = selectNextProcess();
                             // 해당 프로세스의 CPU Burst값이 0보다 작거나 같으면 IO Queue에 넣는 검사과정을 거친다.
                             if(nextProcess.getRemaining_cpu_burst() <= 0){
-                                FixedVariables.ConsolePrintFileWriteParellel("Process " + nextProcess.getPid() + " selected but go to IOQueueChecker due to " + nextProcess.getRemaining_cpu_burst() + " burst time");
+                                Log.Logger("Process " + nextProcess.getPid() + " selected but go to IOQueueChecker due to " + nextProcess.getRemaining_cpu_burst() + " burst time");
                                 EnqueToIOQueue(nextProcess);
                                 // 0보다 큰 경우에는 CPU의 프로세스로 세팅한다.
                             }else{

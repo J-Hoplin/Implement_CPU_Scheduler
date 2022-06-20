@@ -1,4 +1,7 @@
-package CPUScheduler.Processor;
+package CPUScheduler.Process;
+
+import CPUScheduler.Exceptions.IllegalCPUBurstException;
+import CPUScheduler.Exceptions.IllegalIOBurtException;
 
 import java.util.Random;
 
@@ -37,8 +40,7 @@ public class ProcessObjects implements Comparable<ProcessObjects>{
         this.RequireCPUTime = this.remaining_cpu_time = RequireCPUTime;
         this.CPUBurstRandomSeed = CPUBurstRandomSeed;
         this.IOBurstRandomSeed = IOBurstRandomSeed;
-        setRandomCPUBurst();
-        setRandomIOBurst();
+        setCPUBurstIOBurstRandom();
     }
 
     @Override
@@ -89,22 +91,34 @@ public class ProcessObjects implements Comparable<ProcessObjects>{
         remaining_cpu_burst--;
     }
 
-    public void setCPUBurstIOBurstRandom(){
-        setRandomIOBurst();
-        setRandomCPUBurst();
+    public void setCPUBurstIOBurstRandom() {
+        try {
+            setRandomIOBurst();
+            setRandomCPUBurst();
+        } catch (IllegalCPUBurstException | IllegalIOBurtException e) {
+            e.printStackTrace();
+            System.exit(-1);
+        }
     }
 
+
     // Set Random CPU Burst
-    private void setRandomCPUBurst(){
-        if(CPUBurstRandomSeed == 0){
+    private void setRandomCPUBurst() throws IllegalCPUBurstException {
+        if (CPUBurstRandomSeed < 0){
+            throw new IllegalCPUBurstException();
+        }
+        else if(CPUBurstRandomSeed == 0){
             this.CPUBurstTime = remaining_cpu_burst = 0;
         }else{
             this.CPUBurstTime = remaining_cpu_burst = random.nextInt(CPUBurstRandomSeed) + 1;
         }
     }
     // Set Random IO Burst
-    private void setRandomIOBurst(){
-        if(IOBurstRandomSeed == 0){
+    private void setRandomIOBurst() throws IllegalIOBurtException {
+        if(IOBurstRandomSeed < 0){
+            throw new IllegalIOBurtException();
+        }
+        else if(IOBurstRandomSeed == 0){
             this.IOBurstTime = remaining_io_burst = 0;
         }else{
             this.IOBurstTime = remaining_io_burst = random.nextInt(IOBurstRandomSeed) + 1;

@@ -3,14 +3,15 @@ package CPUScheduler.SchedulerAlgorithms;
 import CPUScheduler.CPU.CPU;
 import CPUScheduler.Configurations.FixedVariables;
 import CPUScheduler.Dispatcher.Dispatcher;
-import CPUScheduler.Processor.ProcessObjects;
+import CPUScheduler.Exceptions.IllegalMethodCallException;
+import CPUScheduler.Logger.Log;
+import CPUScheduler.Process.ProcessObjects;
 
 import java.util.*;
-import java.util.function.Predicate;
 
 public abstract class Scheduler{
     //스케줄러 이름
-    private String SchedulerAlgorithmName;
+    private static String SchedulerAlgorithmName;
 
     // 수행이 완료된 프로세스 저장
     protected LinkedList<ProcessObjects> finishedQueue =new LinkedList<>();
@@ -39,8 +40,8 @@ public abstract class Scheduler{
     //Abstract Class "Scheduler"'s Constructor
     //Initiate Process
     public Scheduler(int processCount,List<Integer> preprocessPCBs){
-        System.out.println("===========================");
-        System.out.println("[ Scheduler Simulator is now Running ]");
+        Log.Logger("===========================");
+        Log.Logger("[ Scheduler Simulator is now Running ]");
         initiateProcess(preprocessPCBs);
         this.processCount = processCount;
     }
@@ -65,8 +66,16 @@ public abstract class Scheduler{
         }
     }
 
+    public static String getSelectedAlgorithmName() throws IllegalMethodCallException {
+        if(SchedulerAlgorithmName == null){
+            throw new IllegalMethodCallException();
+        }else{
+            return SchedulerAlgorithmName;
+        }
+    }
+
     // Arrival Time을 기준으로 프로세스들을 정렬한다. ProcessObject의 compareTo를 구현해 놓음
-    public void SortProcessStackWithArrivalTime(){
+    protected void SortProcessStackWithArrivalTime(){
         Collections.sort(ProcessStack);
     }
 
@@ -94,13 +103,13 @@ public abstract class Scheduler{
         if(ifCpuValuesNotChanged){
             // 만약 ReadyQueue가 비어있고, CPU에서 작동중인 프로세스가 없으면 바로 CPU에 넣어준다.
             if(checkCPUReadyQueueEmpty()){
-                System.out.println("Process  : " + processObjects.getPid() + " re-set to Running State. Ready Queue & CPU Running Process is empty");
+                Log.Logger("Process  : " + processObjects.getPid() + " re-set to Running State. Ready Queue & CPU Running Process is empty");
                 cpu.setProcess(processObjects);
             }else{
                 // 그대로 넣는다
-                System.out.println("Process " + processObjects.getPid() + " go back to ReadyQueue Directly.");
-                System.out.println("Process left CPU Time : " + processObjects.getRemaining_cpu_time());
-                System.out.println("Process left CPU Burst Time : " + processObjects.getRemaining_cpu_burst());
+                Log.Logger("Process " + processObjects.getPid() + " go back to ReadyQueue Directly.");
+                Log.Logger("Process left CPU Time : " + processObjects.getRemaining_cpu_time());
+                Log.Logger("Process left CPU Burst Time : " + processObjects.getRemaining_cpu_burst());
                 ReadyQueue.add(processObjects);
             }
         }
@@ -110,7 +119,7 @@ public abstract class Scheduler{
         }
     }
 
-    public void EnqueToIOQueue(ProcessObjects processObjects){
+    protected void EnqueToIOQueue(ProcessObjects processObjects){
         //프로세스의 CPU Time이 0이된 순간에는 더이상 IO가 발생하지 않는다. 그렇기 때문에, 바로 Finish Queue로 넣어준다.
         if(processObjects.getRemaining_cpu_time() <= 0){
             processObjects.setFinishedTime(SchedulerTotalRunningTime);
@@ -124,7 +133,7 @@ public abstract class Scheduler{
         }
         // 만약 아닌 경우, IOQueue로 들어가게 된다.
         else{
-            System.out.println("Process : " + processObjects.getPid() + " go to I/O State(Blocked State)");
+            Log.Logger("Process : " + processObjects.getPid() + " go to I/O State(Blocked State)");
             IOQueue.add(processObjects);
         }
     }
@@ -133,11 +142,11 @@ public abstract class Scheduler{
     // print selected algorithm and Processes that initialized
     protected void PrintAlgorithmNameAndProcesses(String AlgorithmName){
         SchedulerAlgorithmName = AlgorithmName;
-        System.out.println("[ Selected Scheduling Algorithm : " + AlgorithmName + " Algorithm ]");
-        System.out.println("[ Process initiated. Process initiated list will be show below ]");
+        Log.Logger("[ Selected Scheduling Algorithm : " + AlgorithmName + " Algorithm ]");
+        Log.Logger("[ Process initiated. Process initiated list will be show below ]");
         printProcessList();
-        System.out.println("===========================");
-        System.out.println("Simulation will start in 5second");
+        Log.Logger("===========================");
+        Log.Logger("Simulation will start in 5second");
         //FixedVariables.BreakConsole(5000);
     }
 
@@ -145,17 +154,17 @@ public abstract class Scheduler{
     // additional print : Time Quantum for Rounded Robin
     protected void PrintAlgorithmNameAndProcesses(String AlgorithmName,int TimeQuantum){
         SchedulerAlgorithmName = AlgorithmName;
-        System.out.println("[ Selected Scheduling Algorithm : " + AlgorithmName + " Algorithm ]");
-        System.out.println("[ Time Quantum : " + TimeQuantum + " ]");
-        System.out.println("[ Process initiated. Process initiated list will be show below ]");
+        Log.Logger("[ Selected Scheduling Algorithm : " + AlgorithmName + " Algorithm ]");
+        Log.Logger("[ Time Quantum : " + TimeQuantum + " ]");
+        Log.Logger("[ Process initiated. Process initiated list will be show below ]");
         printProcessList();
-        System.out.println("===========================");
-        System.out.println("Simulation will start in 5second");
+        Log.Logger("===========================");
+        Log.Logger("Simulation will start in 5second");
         //FixedVariables.BreakConsole(5000);
     }
 
     protected void addToFinishedQueue(ProcessObjects process){
-        FixedVariables.ConsolePrintFileWriteParellel("Process " + process.getPid() + " end of running and enque to finished Queue at " + SchedulerTotalRunningTime);
+        Log.Logger("Process " + process.getPid() + " end of running and enque to finished Queue at " + SchedulerTotalRunningTime);
         finishedQueue.add(process);
     }
 
@@ -177,43 +186,43 @@ public abstract class Scheduler{
         IOIDLEOneSecond(); // IO IDLE상태에 대한 검사
         CPUIDLEOneSecond(); // CPU IDLE상태에 대한 검사
         SchedulerTotalRunningTime++;
-        System.out.println("Cycle ends\n");
+        Log.Logger("Cycle ends\n");
     }
 
-    public void printCycleSummary(){
-        System.out.println("\n** Cycle Summary **");
+    protected void printCycleSummary(){
+        Log.Logger("\n** Cycle Summary **");
         ArrayList<String> e = new ArrayList<>();
-        System.out.println("( CPU Info )");
-        System.out.print("Running Process : ");
+        Log.Logger("( CPU Info )");
+        Log.Logger("Running Process : ",false);
         if(cpu.CPUhasProcess()){
-            System.out.println(cpu.getProcess().getPid());
+            Log.Logger(cpu.getProcess().getPid());
         }else{
-            System.out.println("No other process Running");
+            Log.Logger("No other process Running");
         }
-        System.out.println("( Ready Queue )");
-        System.out.print("Ready Queue : ");
+        Log.Logger("( Ready Queue )");
+        Log.Logger("Ready Queue : ",false);
         if(ReadyQueueEmpty()){
-            System.out.println("No other process is ready state");
+            Log.Logger("No other process is ready state");
         }else{
             for(ProcessObjects p : ReadyQueue){
                 e.add(p.getPid());
             }
-            System.out.println(String.join("->",e));
+            Log.Logger(String.join("->",e));
         }
         e.clear();
-        System.out.println("( I/O Queue )");
-        System.out.print("I/O Queue : ");
+        Log.Logger("( I/O Queue )");
+        Log.Logger("I/O Queue : ",false);
         if(IOQueueEmpty()){
-            System.out.println("No other process is blocked state");
+            Log.Logger("No other process is blocked state");
         }else{
             for(ProcessObjects p : IOQueue){
                 //Debugging Comment
                 //System.out.println(p.getRemaining_cpu_time() + " " + p.getRemaining_cpu_burst() + " " + p.getRemaining_io_burst());
                 e.add(p.getPid());
             }
-            System.out.println(String.join("->",e));
+            Log.Logger(String.join("->",e));
         }
-        System.out.println("*******************\n");
+        Log.Logger("*******************\n");
     }
 
     protected void printProcessList(){
@@ -221,35 +230,35 @@ public abstract class Scheduler{
         for(ProcessObjects p : ProcessStack){
             msg += p;
         }
-        System.out.println(msg);
+        Log.Logger(msg);
     }
 
     // Ready Queue에 있는 모든 프로세스에 대해 ready state값을 1씩 증가시켜준다
-    public void ReadyQueueAddOneSecond(){
+    protected void ReadyQueueAddOneSecond(){
         for(ProcessObjects p : ReadyQueue){
             p.oneSecondPastReadyQueue();
         }
     }
     // IO Queue에 있는 모든 프로세스에 대해 blocked state값을 1씩 증가시키고 remaining io burst를 1감소시킨다.
-    public void IOQueueAddOneSecond(){
+    protected void IOQueueAddOneSecond(){
         for(ProcessObjects p : IOQueue){
             p.oneSecondPastIOQueue();
         }
     }
 
     //스케줄러의 실행시간에 1초를 더해준다.
-    public void SchedulerRunningTimeAddOneSecond(){
+    protected void SchedulerRunningTimeAddOneSecond(){
         SchedulerTotalRunningTime++;
     }
 
-    public void CPUIDLEOneSecond(){
+    protected void CPUIDLEOneSecond(){
         // CPU에 프로세스가 없을때만 IDLE Time에 1초를 더해준다
         if(!cpu.CPUhasProcess()){
             CPUIDLETime++;
         }
     }
 
-    public void IOIDLEOneSecond(){
+    protected void IOIDLEOneSecond(){
         // IO Queue에서 I/O상태인 프로세스가 없을때만 1초를 더해준다.
         if(IOQueue.isEmpty()){
             IOIDLETime++;
@@ -258,8 +267,8 @@ public abstract class Scheduler{
 
     //ProcessStack에서 현재 스케줄러 러닝 타임에 비해 작거나 같은 프로세스가 있으면 Ready Queue에 Enque한다
     // 스케줄러 최초 실행해 ProcessStack은 ArrivalTime을 기준으로 정렬되기 때문에 이렇게 해도 문제가 되지 않음
-    public void CheckProcessStackAndEnqueToReadyQueue(){
-        System.out.println("Checking Process Arrival Time");
+    protected void CheckProcessStackAndEnqueToReadyQueue(){
+        Log.Logger("Checking Process Arrival Time");
         int counter = 0;
         for(ProcessObjects p : ProcessStack){
             if(p.getArrivalTime() <= SchedulerTotalRunningTime){
@@ -272,7 +281,7 @@ public abstract class Scheduler{
     }
 
     // IOQueue에서 Remaining IO Burst Time이 0보다 작은경우에 대해 처리한다
-    public void CheckIOQueueUnLockBlockedState(){
+    protected void CheckIOQueueUnLockBlockedState(){
         Queue<ProcessObjects> q = new LinkedList<>();
         // 우선 IO Queue에서 IOBurst가 0보다 작은 Process가 있는지 확인한다. 있는 경우 q에 저장
         for (ProcessObjects processObjects : IOQueue) {
@@ -284,7 +293,7 @@ public abstract class Scheduler{
         for(ProcessObjects processObjects : q){
             // CPU Time이 0 이하인 경우 -> 종료된 프로세스
             if(processObjects.getRemaining_cpu_time() <= 0){
-                System.out.println(processObjects.getPid());
+                Log.Logger(processObjects.getPid());
                 processObjects.setFinishedTime(SchedulerTotalRunningTime);
                 addToFinishedQueue(processObjects);
                 // CPU Time이 1이상 -> 아직 작동중인 프로세스
@@ -296,20 +305,20 @@ public abstract class Scheduler{
     }
 
    // ReadyQueue비어있는지 확인한다
-    public boolean ReadyQueueEmpty(){
+    protected boolean ReadyQueueEmpty(){
         return ReadyQueue.isEmpty();
     }
     //IOQueue비어있는지 확인한다
-    public boolean IOQueueEmpty(){
+    protected boolean IOQueueEmpty(){
         return IOQueue.isEmpty();
     }
     //ProcessStack비어있는지 확인한다
-    public boolean ProcessStackEmpty(){
+    protected boolean ProcessStackEmpty(){
         return ProcessStack.isEmpty();
     }
 
-    public void CheckSchedulerExitCondition(){
-        System.out.println("Check Scheduler Exit Condition");
+    protected void CheckSchedulerExitCondition(){
+        Log.Logger("Check Scheduler Exit Condition");
         /*
         * 종료조건
         * 1. ProcessStack에 남은 스택 없음
@@ -318,7 +327,7 @@ public abstract class Scheduler{
         * 4. CPU에 돌아가고 있는 프로세스가 없을때
         * */
         if(ProcessStackEmpty() && ReadyQueueEmpty() && IOQueueEmpty() && !cpu.CPUhasProcess()){
-            System.out.println("Scheduler Simulation End!");
+            Log.Logger("Scheduler Simulation End!");
             /*
              이 시뮬레이터에서 스케줄러는 IO Running Time까지 포함한 시간이다.
              그렇기 때문에 이 종류 시점에는 마지막 프로세스의 IO Time까지 포함한 시간을 값으로 가지게 된다
@@ -329,12 +338,13 @@ public abstract class Scheduler{
              */
             SchedulerTotalRunningTime = finishedQueue.getLast().getFinishedTime();
             printSummary();
+            Log.SaveLogAsTxt();
             FixedVariables.ExitProgram();
         }
     }
 
     // 분기줄 계산메소드
-    public String CalculateLines(String msg){
+    protected String CalculateLines(String msg){
         int max = 50;
         int size = max - msg.length();
         size = size / 2;
@@ -345,47 +355,47 @@ public abstract class Scheduler{
         return "\n" + line + " " + msg + " " + line;
     }
 
-    public void printSummary(){
+    protected void printSummary(){
         int totalRunningOfProcesses = 0;
         int totalBlockedOfProcesses = 0;
         int totalTurnAroundTimeProcesses = 0;
         int totalWaitingTimeProcesses = 0;
 
 
-        System.out.println(CalculateLines("[ Summary of " + SchedulerAlgorithmName + " finished order ]"));
+        Log.Logger(CalculateLines("[ Summary of " + SchedulerAlgorithmName + " finished order ]"));
         // 종료한 순서대로 PID 출력
         Queue<String> FinishQueuePID = new LinkedList<>();
         for(ProcessObjects p : finishedQueue){
             FinishQueuePID.add(p.getPid());
         }
-        System.out.println(String.join(" -> ",FinishQueuePID));
-        System.out.println(CalculateLines("[ Summary of each process ]"));
+        Log.Logger(String.join(" -> ",FinishQueuePID));
+        Log.Logger(CalculateLines("[ Summary of each process ]"));
 
         for(ProcessObjects p : finishedQueue){
-            System.out.println("< Process : " + p.getPid() + " >");
-            System.out.println("Finishing Time : " + p.getFinishedTime());
-            System.out.println("Turnaround Time : " + (p.getFinishedTime() - p.getFirstArrivedTime()));
+            Log.Logger("< Process : " + p.getPid() + " >");
+            Log.Logger("Finishing Time : " + p.getFinishedTime());
+            Log.Logger("Turnaround Time : " + (p.getFinishedTime() - p.getFirstArrivedTime()));
             totalTurnAroundTimeProcesses += (p.getFinishedTime() - p.getFirstArrivedTime());
-            System.out.println("CPU Time(Running State Time) : " + p.getTotal_running_time());
+            Log.Logger("CPU Time(Running State Time) : " + p.getTotal_running_time());
             totalRunningOfProcesses += p.getTotal_running_time();
-            System.out.println("I/O Time(Blocked State Time) : " + p.getTotal_blocked_time());
+            Log.Logger("I/O Time(Blocked State Time) : " + p.getTotal_blocked_time());
             totalBlockedOfProcesses += p.getTotal_blocked_time();
-            System.out.println("Waiting Time(Ready State Time) : " + p.getTotal_ready_time());
+            Log.Logger("Waiting Time(Ready State Time) : " + p.getTotal_ready_time());
             totalWaitingTimeProcesses += p.getTotal_ready_time();
-            System.out.println("\n");
+            Log.Logger("\n");
         }
 
-        System.out.println(CalculateLines("[ Summary of Scheduler ]"));
-        System.out.println("Scheduler Finishing Time : " + SchedulerTotalRunningTime);
-        System.out.println("Average turnaround time : " + String.format("%.2f",((float)totalTurnAroundTimeProcesses / (float) processCount)));
-        System.out.println("Average waiting time : " + String.format("%.2f",((float)totalWaitingTimeProcesses / (float) processCount)));
-        System.out.println("CPU Utilization : " + returnCPUUtilization());
-        System.out.println("I/O Utilization : " + returnIOUtilization());
-        System.out.println("Throughput in processes completed per hundred time units : " + returnThroughPutInProcessCompletedPerHundredTimeUnit());
+        Log.Logger(CalculateLines("[ Summary of Scheduler ]"));
+        Log.Logger("Scheduler Finishing Time : " + SchedulerTotalRunningTime);
+        Log.Logger("Average turnaround time : " + String.format("%.2f",((float)totalTurnAroundTimeProcesses / (float) processCount)));
+        Log.Logger("Average waiting time : " + String.format("%.2f",((float)totalWaitingTimeProcesses / (float) processCount)));
+        Log.Logger("CPU Utilization : " + returnCPUUtilization());
+        Log.Logger("I/O Utilization : " + returnIOUtilization());
+        Log.Logger("Throughput in processes completed per hundred time units : " + returnThroughPutInProcessCompletedPerHundredTimeUnit());
     }
 
     // CPU Utilization
-    public String returnCPUUtilization(){
+    protected String returnCPUUtilization(){
         float t = ((float)(SchedulerTotalRunningTime - CPUIDLETime) / (float)SchedulerTotalRunningTime) * 100;
         // 소수점 두자리까지만
         String value = String.format("%.2f",t);
@@ -393,14 +403,14 @@ public abstract class Scheduler{
     }
 
     // IO Utilization
-    public String returnIOUtilization(){
+    protected String returnIOUtilization(){
         float t = ((float)(SchedulerTotalRunningTime - IOIDLETime) / (float)SchedulerTotalRunningTime) * 100;
         // 소수점 두자리까지만
         String value = String.format("%.2f",t);
         return value + " %";
     }
 
-    public String returnThroughPutInProcessCompletedPerHundredTimeUnit(){
+    protected String returnThroughPutInProcessCompletedPerHundredTimeUnit(){
         float t = ((float)(finishedQueue.size())/(float)SchedulerTotalRunningTime) * 100;
         String value = String.format("%.2f",t);
         return value + " %";

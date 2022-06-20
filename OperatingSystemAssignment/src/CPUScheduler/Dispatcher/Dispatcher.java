@@ -2,7 +2,8 @@ package CPUScheduler.Dispatcher;
 
 import CPUScheduler.CPU.CPU;
 import CPUScheduler.Configurations.FixedVariables;
-import CPUScheduler.Processor.ProcessObjects;
+import CPUScheduler.Logger.Log;
+import CPUScheduler.Process.ProcessObjects;
 
 public class Dispatcher {
     private static Dispatcher dispatcher;
@@ -19,14 +20,14 @@ public class Dispatcher {
     // ContextSwitching
     public ProcessObjects ContextSwitching(CPU cpu, ProcessObjects processObjects){
         ProcessObjects endProcess = cpu.getProcess();
-        FixedVariables.ConsolePrintFileWriteParellel("Context Switching Between " + endProcess.getPid() + " <-> " + processObjects.getPid());
+        Log.Logger("Context Switching Between " + endProcess.getPid() + " <-> " + processObjects.getPid());
         cpu.setProcess(processObjects);
         return endProcess;
     }
 
     public ProcessObjects ContextSwitching(CPU cpu){
         ProcessObjects p = cpu.getProcess();
-        FixedVariables.ConsolePrintFileWriteParellel("Only Process Terminated : " + p.getPid() + " / Ready Queue Empty");
+        Log.Logger("Only Process Terminated : " + p.getPid() + " / Ready Queue Empty");
         cpu.clearCPUProcess();
         return p;
     }

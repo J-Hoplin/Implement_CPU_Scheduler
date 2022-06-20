@@ -1,9 +1,9 @@
 package CPUScheduler.SchedulerAlgorithms;
 
 import CPUScheduler.Configurations.FixedVariables;
-import CPUScheduler.Processor.ProcessObjects;
+import CPUScheduler.Logger.Log;
+import CPUScheduler.Process.ProcessObjects;
 
-import java.sql.Time;
 import java.util.List;
 
 public class RoundRobin extends Scheduler{
@@ -25,7 +25,7 @@ public class RoundRobin extends Scheduler{
     }
 
     private void resetTimeQuantum(){
-        System.out.println("Time Quatum Reset!");
+        Log.Logger("Time Quatum Reset!");
         // Time Quantum 초기화하는 함수
         this.TimeQuantum = this.originalTimeQuantumSaved;
     }
@@ -44,7 +44,7 @@ public class RoundRobin extends Scheduler{
     // 다시구현
     public void Algorithm() {
         while(true){
-            System.out.println("[ Log at time : " + SchedulerTotalRunningTime + " ]");
+            Log.Logger("[ Log at time : " + SchedulerTotalRunningTime + " ]");
             IntegratedInitialJobPerEachCircular();
             /// Logic ///
             // 기존 로직에 TimeQuantum이 0이 됐을때에 대해서를 추가한다.
@@ -65,7 +65,7 @@ public class RoundRobin extends Scheduler{
                             if(!ReadyQueueEmpty()){
                                 ProcessObjects nextProcess = selectNextProcess();
                                 if(nextProcess.getRemaining_cpu_burst() <= 0){
-                                    FixedVariables.ConsolePrintFileWriteParellel("Process " + nextProcess.getPid() + " selected but go to IOQueueChecker due to " + nextProcess.getRemaining_cpu_burst() + " burst time");
+                                    Log.Logger("Process " + nextProcess.getPid() + " selected but go to IOQueueChecker due to " + nextProcess.getRemaining_cpu_burst() + " burst time");
                                     EnqueToIOQueue(nextProcess);
                                 }else{
                                     p = dispatcher.ContextSwitching(cpu,nextProcess);
@@ -100,7 +100,7 @@ public class RoundRobin extends Scheduler{
                 }
                 // CPU에서 Running State인 프로세스는 있지만 Context Switching이 이루어질 필요가 없는 단계
                 else{
-                    System.out.println("\nProcess : " + cpu.getProcess().getPid() + " is now Running!");
+                    Log.Logger("\nProcess : " + cpu.getProcess().getPid() + " is now Running!");
                 }
             }
             // CPU 안에서 Running State의 프로세스가 없는 경우
@@ -115,7 +115,7 @@ public class RoundRobin extends Scheduler{
                             ProcessObjects nextProcess = selectNextProcess();
                             // 해당 프로세스의 CPU Burst값이 0보다 작거나 같으면 IO Queue에 넣는 검사과정을 거친다.
                             if(nextProcess.getRemaining_cpu_burst() <= 0){
-                                FixedVariables.ConsolePrintFileWriteParellel("Process " + nextProcess.getPid() + " selected but go to IOQueueChecker due to " + nextProcess.getRemaining_cpu_burst() + " burst time");
+                                Log.Logger("Process " + nextProcess.getPid() + " selected but go to IOQueueChecker due to " + nextProcess.getRemaining_cpu_burst() + " burst time");
                                 EnqueToIOQueue(nextProcess);
                                 // 0보다 큰 경우에는 CPU의 프로세스로 세팅한다.
                             }else{
