@@ -42,31 +42,14 @@ $ java CPUScheduler/SchedulerMain --help
 ### TODO
 - [ ] Template Method Pattern 적용하기  
 ***
-### Version State
+### Version State(Latest)
 
-- [v 1.1.0](https://github.com/J-hoplin1/OS_Implement_CPU_Scheduler/tree/v-1.1.0) : **해당 버전의 코드로 과제 제출**
-    - Scheduler Summary에서 Average Turnaround, Average Waiting에 대해 소수점 둘째자리까지 표시되게끔 변경하였습니다.
-    - Logic Error : 프로세스가 마지막 CPU Burst가 끝난 다음, IO Burst가 일어나지 않는다는 점을 깜빡하고 있었습니다. 이 내용을 알고리즘에 적용시켰습니다.
-    ```java
-    public void EnqueToIOQueue(ProcessObjects processObjects){
-        //프로세스의 CPU Time이 0이된 순간에는 더이상 IO가 발생하지 않는다. 그렇기 때문에, 바로 Finish Queue로 넣어준다.
-        if(processObjects.getRemaining_cpu_time() <= 0){
-            processObjects.setFinishedTime(SchedulerTotalRunningTime);
-            addToFinishedQueue(processObjects);
-        }
-        // CPU Time은 0보다 크다
-        // 만약 프로세스의 전체 IO Burst가 0보다 작거나 같으면 IO Queue로 안들어 가고 ReadyQueue로 가게 된다
-        // IO Burst가 0이하인 프로세스에 대해서
-        else if(processObjects.getIOBurstTime() <= 0){
-            ReEnqueueToReadyQueue(processObjects);
-        }
-        // 만약 아닌 경우, IOQueue로 들어가게 된다.
-        else{
-            System.out.println("Process : " + processObjects.getPid() + " go to I/O State(Blocked State)");
-            IOQueue.add(processObjects);
-        }
-    }
-    ```
+#### [v 2.0.0](https://github.com/J-hoplin1/OS_Implement_CPU_Scheduler/tree/v-2.0.0)
+
+- Log기능 강화
+    Logging 기능이 강화되었습니다. 모든 콘솔 출력에 대한 코드는 v 2.0.0에서 새로 추가된 [Logger.Log](https://github.com/J-hoplin1/OS_Implement_CPU_Scheduler/tree/main/OperatingSystemAssignment/src/CPUScheduler/Logger)에 의해서 이루어 집니다. 이제 실행 후 실행 결과를 Log File로 자동으로 저장합니다(text파일). 저장 기능의 On/Off는 이 과제의 매개변수 조건을 준수하기 위해서 추가하지 않을 예정입니다.
+
+
 ***
 ### Assignment Description
 이 과제에서는 CPU scheduling 알고리즘에 따라 여러 가지 성능수치가 어떻게 달라지는가를 관찰하기 위한 시뮬레이션을 수행한다. 시뮬레이션 프로그램이 수행해야 할 가장 기본적인 작업은 computation과 I/O 요청을 번갈아 수행하는 process들에 대해 CPU scheduling을 수행하는 것이다. 이를 위해 다음과 같이 간단한 가정을 한다. 
