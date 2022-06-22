@@ -1,8 +1,9 @@
 package CPUScheduler.SchedulerAlgorithms;
 
 import CPUScheduler.CPU.CPU;
-import CPUScheduler.Configurations.FixedVariables;
+import CPUScheduler.Configurations.GlobalUtilities;
 import CPUScheduler.Dispatcher.Dispatcher;
+import CPUScheduler.Exceptions.DirectoryGenerateFailedException;
 import CPUScheduler.Exceptions.IllegalMethodCallException;
 import CPUScheduler.Logger.Log;
 import CPUScheduler.Process.ProcessObjects;
@@ -327,19 +328,16 @@ public abstract class Scheduler{
         * 4. CPU에 돌아가고 있는 프로세스가 없을때
         * */
         if(ProcessStackEmpty() && ReadyQueueEmpty() && IOQueueEmpty() && !cpu.CPUhasProcess()){
-            Log.Logger("Scheduler Simulation End!");
-            /*
-             이 시뮬레이터에서 스케줄러는 IO Running Time까지 포함한 시간이다.
-             그렇기 때문에 이 종류 시점에는 마지막 프로세스의 IO Time까지 포함한 시간을 값으로 가지게 된다
-             하지만 실제 스케줄러(간트 차트상에서)에서는 마지막 프로세스의 IO Time을 뺀 시간까지만 고려를 하게된다
-
-             CPU스케줄러와 Blocked State는 별개이므로
-             결국 스케줄러의 총 Running Time은 마지막 Finish 프로세스의 Finish Time과 동일해야 한다.
-             */
-            SchedulerTotalRunningTime = finishedQueue.getLast().getFinishedTime();
-            printSummary();
-            Log.SaveLogAsTxt();
-            FixedVariables.ExitProgram();
+            try{
+                Log.Logger("Scheduler Simulation End!");
+                // Statement Deprecated : Version 2.0.0
+                //SchedulerTotalRunningTime = finishedQueue.getLast().getFinishedTime();
+                printSummary();
+                Log.SaveLogAsTxt();
+                GlobalUtilities.ExitProgram();
+            }catch (DirectoryGenerateFailedException e){
+                GlobalUtilities.ExitProgram();
+            }
         }
     }
 
@@ -419,6 +417,6 @@ public abstract class Scheduler{
 
     // 스케줄링 알고리즘마다 다음 프로세스 선택기준이 다를 수 있으므로 추상메소드 정의
     public abstract ProcessObjects selectNextProcess();
-    // Implement each cpu scheduling algorithm in this method
+    // Implement each cpu scheduling algorithm via override this method
     public abstract void Algorithm();
 }

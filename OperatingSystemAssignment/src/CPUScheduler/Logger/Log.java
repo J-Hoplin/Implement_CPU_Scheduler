@@ -1,5 +1,7 @@
 package CPUScheduler.Logger;
 
+import CPUScheduler.Configurations.GlobalUtilities;
+import CPUScheduler.Exceptions.DirectoryGenerateFailedException;
 import CPUScheduler.Exceptions.IllegalMethodCallException;
 import CPUScheduler.SchedulerAlgorithms.Scheduler;
 
@@ -32,22 +34,31 @@ public class Log {
             AppendToLogMSG(msg,false);
         }
     }
-    public static void SaveLogAsTxt(){
+    public static void SaveLogAsTxt() throws DirectoryGenerateFailedException {
         System.out.println("\nSaving log file...");
+        String logdirectory = GlobalUtilities.getRootDirectory() + "logfiles/";
+        File root = new File(logdirectory);
+        // Check directory
+        if(!root.exists()){
+            boolean res = root.mkdir();
+            if(!res){
+                throw new DirectoryGenerateFailedException();
+            }
+        }
         try{
             String AlgorithmName = Scheduler.getSelectedAlgorithmName();
             LocalDateTime n = LocalDateTime.now();
             DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy_MM_dd hh_mm_ss");
             String timeInfo = n.format(format);
             String textFileName = timeInfo + "_" + AlgorithmName + ".txt";
-            File file = new File(textFileName);
+            File file = new File(logdirectory + textFileName);
             FileWriter w = new FileWriter(file);
             w.write(Log.LOGMSG.toString());
             w.flush();
             w.close();
         }catch (IllegalMethodCallException | IOException e) {
             e.printStackTrace();
-            System.exit(-1);
+            GlobalUtilities.ExitProgram();
         }
     }
 }

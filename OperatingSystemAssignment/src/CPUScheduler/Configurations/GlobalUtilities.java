@@ -1,8 +1,6 @@
 package CPUScheduler.Configurations;
 
-import java.util.Locale;
-
-public class FixedVariables {
+public class GlobalUtilities {
     // Exit Program
     public static void ExitProgram(){
         System.exit(0);

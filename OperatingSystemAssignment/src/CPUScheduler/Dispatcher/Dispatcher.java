@@ -1,7 +1,6 @@
 package CPUScheduler.Dispatcher;
 
 import CPUScheduler.CPU.CPU;
-import CPUScheduler.Configurations.FixedVariables;
 import CPUScheduler.Logger.Log;
 import CPUScheduler.Process.ProcessObjects;
 

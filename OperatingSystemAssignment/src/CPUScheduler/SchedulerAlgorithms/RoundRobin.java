@@ -1,6 +1,5 @@
 package CPUScheduler.SchedulerAlgorithms;
 
-import CPUScheduler.Configurations.FixedVariables;
 import CPUScheduler.Logger.Log;
 import CPUScheduler.Process.ProcessObjects;
 

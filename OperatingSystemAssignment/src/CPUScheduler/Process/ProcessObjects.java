@@ -1,5 +1,6 @@
 package CPUScheduler.Process;
 
+import CPUScheduler.Configurations.GlobalUtilities;
 import CPUScheduler.Exceptions.IllegalCPUBurstException;
 import CPUScheduler.Exceptions.IllegalIOBurtException;
 
@@ -97,7 +98,7 @@ public class ProcessObjects implements Comparable<ProcessObjects>{
             setRandomCPUBurst();
         } catch (IllegalCPUBurstException | IllegalIOBurtException e) {
             e.printStackTrace();
-            System.exit(-1);
+            GlobalUtilities.ExitProgram();
         }
     }
 

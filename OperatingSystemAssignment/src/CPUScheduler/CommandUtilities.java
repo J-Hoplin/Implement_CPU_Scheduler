@@ -1,21 +1,18 @@
 package CPUScheduler;
 
 import CPUScheduler.Configurations.CommandMSGs;
-import CPUScheduler.Configurations.FixedVariables;
+import CPUScheduler.Configurations.GlobalUtilities;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 public class CommandUtilities {
 
     private static void printManPage(){
         try {
-            BufferedReader br = new BufferedReader(new FileReader(FixedVariables.getRootDirectory() + "help.txt"));
+            BufferedReader br = new BufferedReader(new FileReader(GlobalUtilities.getRootDirectory() + "help.txt"));
             String line = "";
             while(true){
                 try {
@@ -32,13 +29,13 @@ public class CommandUtilities {
         } catch (FileNotFoundException e) {
             System.out.println("Can't find file 'help.txt'");
         }
-        FixedVariables.ExitProgram();
+        GlobalUtilities.ExitProgram();
     }
 
     public static void RaiseHelpCommand(String[] args){
         if(args.length == 0){
             System.out.println("No arguments found type --help for help");
-            FixedVariables.ExitProgram();
+            GlobalUtilities.ExitProgram();
         }else if(args[0].equals(CommandMSGs.helpCommand)){
             printManPage();
         }else if(args.length < 2){

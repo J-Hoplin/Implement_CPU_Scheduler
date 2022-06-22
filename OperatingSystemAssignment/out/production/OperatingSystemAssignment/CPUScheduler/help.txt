@@ -2,8 +2,8 @@
 Description : Require text file that test case is stated. Text file path should be desingate in 2 ways below
 
 < Path >
-- a.txt : a.txt from directory of Working Directory(CPUScheduler/(file))
-- Absolute Path : text file from absoulute path. Recommend to use result of 'pwd' command(Linux/Unix)
+- data.txt : data.txt from directory of Working Directory(CPUScheduler/(file))(Default file option of this program)
+- Absolute Path : text file of absoulute path from other directory. Recommend to use result of 'pwd' command(Linux/Unix)
 
 [ Parameter2 : Scheduler Type ]
 Description : Designate scheduler type you want to use there are three cases
