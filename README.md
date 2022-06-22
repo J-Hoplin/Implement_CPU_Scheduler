@@ -44,7 +44,7 @@ $ java CPUScheduler/SchedulerMain --help
 ***
 ### Version State(Latest)
 
-#### [v 2.1.0](https://github.com/J-hoplin1/OS_Implement_CPU_Scheduler/tree/v-2.1.0)
+#### [v 2.1.0](https://github.com/J-hoplin1/OS_Implement_CPU_Scheduler/tree/v-2.1.0) : 2022/06/23
 
 - Log파일 저장경로 지정
     - 로그파일들에 대한 저장경로를 고정합니다. 로그파일 저장경로는 src/CPUScheduler/logfiles에 저장되게 됩니다.
