@@ -36,7 +36,7 @@ $ java CPUScheduler/SchedulerMain --help
 ```
 ***
 ### Class Diagram
-![image](https://user-images.githubusercontent.com/45956041/174630311-79d304d4-3af9-4011-ab2c-a80c498892ac.png)
+<img width="1055" alt="image" src="https://user-images.githubusercontent.com/45956041/175089261-d11217a7-0401-4b6e-885a-5e370d79b711.png">
 
 ***
 ### TODO
