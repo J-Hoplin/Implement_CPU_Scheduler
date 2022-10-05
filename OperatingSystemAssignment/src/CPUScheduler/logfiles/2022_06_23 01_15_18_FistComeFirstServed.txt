@@ -1,0 +1,374 @@
+===========================
+[ Scheduler Simulator is now Running ]
+[ Selected Scheduling Algorithm : FistComeFirstServed Algorithm ]
+[ Process initiated. Process initiated list will be show below ]
+-----------
+PID : PID_1
+Arrival Time : 0
+Required CPU Time : 5
+Remaining CPU Time : 5
+CPU Burst Time : 1
+Remaining CPU Burst Time : 1
+IO Burst Time : 1
+Remaining IO Burst Time : 1
+-----------
+-----------
+PID : PID_2
+Arrival Time : 0
+Required CPU Time : 5
+Remaining CPU Time : 5
+CPU Burst Time : 1
+Remaining CPU Burst Time : 1
+IO Burst Time : 1
+Remaining IO Burst Time : 1
+-----------
+-----------
+PID : PID_3
+Arrival Time : 3
+Required CPU Time : 5
+Remaining CPU Time : 5
+CPU Burst Time : 1
+Remaining CPU Burst Time : 1
+IO Burst Time : 1
+Remaining IO Burst Time : 1
+-----------
+
+===========================
+Simulation will start in 5second
+[ Log at time : 0 ]
+Check Scheduler Exit Condition
+Checking Process Arrival Time
+Process : PID_1 state changed to running state
+
+** Cycle Summary **
+( CPU Info )
+Running Process : PID_1
+( Ready Queue )
+Ready Queue : PID_2
+( I/O Queue )
+I/O Queue : No other process is blocked state
+*******************
+
+Check Scheduler Exit Condition
+Cycle ends
+
+[ Log at time : 1 ]
+Check Scheduler Exit Condition
+Checking Process Arrival Time
+Context Switching Between PID_1 <-> PID_2
+Process : PID_2 state changed to running state
+Process : PID_1 go to I/O State(Blocked State)
+
+** Cycle Summary **
+( CPU Info )
+Running Process : PID_2
+( Ready Queue )
+Ready Queue : No other process is ready state
+( I/O Queue )
+I/O Queue : PID_1
+*******************
+
+Check Scheduler Exit Condition
+Cycle ends
+
+[ Log at time : 2 ]
+Check Scheduler Exit Condition
+Checking Process Arrival Time
+Context Switching Between PID_2 <-> PID_1
+Process : PID_1 state changed to running state
+Process : PID_2 go to I/O State(Blocked State)
+
+** Cycle Summary **
+( CPU Info )
+Running Process : PID_1
+( Ready Queue )
+Ready Queue : No other process is ready state
+( I/O Queue )
+I/O Queue : PID_2
+*******************
+
+Check Scheduler Exit Condition
+Cycle ends
+
+[ Log at time : 3 ]
+Check Scheduler Exit Condition
+Checking Process Arrival Time
+Context Switching Between PID_1 <-> PID_3
+Process : PID_3 state changed to running state
+Process : PID_1 go to I/O State(Blocked State)
+
+** Cycle Summary **
+( CPU Info )
+Running Process : PID_3
+( Ready Queue )
+Ready Queue : PID_2
+( I/O Queue )
+I/O Queue : PID_1
+*******************
+
+Check Scheduler Exit Condition
+Cycle ends
+
+[ Log at time : 4 ]
+Check Scheduler Exit Condition
+Checking Process Arrival Time
+Context Switching Between PID_3 <-> PID_2
+Process : PID_2 state changed to running state
+Process : PID_3 go to I/O State(Blocked State)
+
+** Cycle Summary **
+( CPU Info )
+Running Process : PID_2
+( Ready Queue )
+Ready Queue : PID_1
+( I/O Queue )
+I/O Queue : PID_3
+*******************
+
+Check Scheduler Exit Condition
+Cycle ends
+
+[ Log at time : 5 ]
+Check Scheduler Exit Condition
+Checking Process Arrival Time
+Context Switching Between PID_2 <-> PID_1
+Process : PID_1 state changed to running state
+Process : PID_2 go to I/O State(Blocked State)
+
+** Cycle Summary **
+( CPU Info )
+Running Process : PID_1
+( Ready Queue )
+Ready Queue : PID_3
+( I/O Queue )
+I/O Queue : PID_2
+*******************
+
+Check Scheduler Exit Condition
+Cycle ends
+
+[ Log at time : 6 ]
+Check Scheduler Exit Condition
+Checking Process Arrival Time
+Context Switching Between PID_1 <-> PID_3
+Process : PID_3 state changed to running state
+Process : PID_1 go to I/O State(Blocked State)
+
+** Cycle Summary **
+( CPU Info )
+Running Process : PID_3
+( Ready Queue )
+Ready Queue : PID_2
+( I/O Queue )
+I/O Queue : PID_1
+*******************
+
+Check Scheduler Exit Condition
+Cycle ends
+
+[ Log at time : 7 ]
+Check Scheduler Exit Condition
+Checking Process Arrival Time
+Context Switching Between PID_3 <-> PID_2
+Process : PID_2 state changed to running state
+Process : PID_3 go to I/O State(Blocked State)
+
+** Cycle Summary **
+( CPU Info )
+Running Process : PID_2
+( Ready Queue )
+Ready Queue : PID_1
+( I/O Queue )
+I/O Queue : PID_3
+*******************
+
+Check Scheduler Exit Condition
+Cycle ends
+
+[ Log at time : 8 ]
+Check Scheduler Exit Condition
+Checking Process Arrival Time
+Context Switching Between PID_2 <-> PID_1
+Process : PID_1 state changed to running state
+Process : PID_2 go to I/O State(Blocked State)
+
+** Cycle Summary **
+( CPU Info )
+Running Process : PID_1
+( Ready Queue )
+Ready Queue : PID_3
+( I/O Queue )
+I/O Queue : PID_2
+*******************
+
+Check Scheduler Exit Condition
+Cycle ends
+
+[ Log at time : 9 ]
+Check Scheduler Exit Condition
+Checking Process Arrival Time
+Context Switching Between PID_1 <-> PID_3
+Process : PID_3 state changed to running state
+Process : PID_1 go to I/O State(Blocked State)
+
+** Cycle Summary **
+( CPU Info )
+Running Process : PID_3
+( Ready Queue )
+Ready Queue : PID_2
+( I/O Queue )
+I/O Queue : PID_1
+*******************
+
+Check Scheduler Exit Condition
+Cycle ends
+
+[ Log at time : 10 ]
+Check Scheduler Exit Condition
+Checking Process Arrival Time
+Context Switching Between PID_3 <-> PID_2
+Process : PID_2 state changed to running state
+Process : PID_3 go to I/O State(Blocked State)
+
+** Cycle Summary **
+( CPU Info )
+Running Process : PID_2
+( Ready Queue )
+Ready Queue : PID_1
+( I/O Queue )
+I/O Queue : PID_3
+*******************
+
+Check Scheduler Exit Condition
+Cycle ends
+
+[ Log at time : 11 ]
+Check Scheduler Exit Condition
+Checking Process Arrival Time
+Context Switching Between PID_2 <-> PID_1
+Process : PID_1 state changed to running state
+Process : PID_2 go to I/O State(Blocked State)
+
+** Cycle Summary **
+( CPU Info )
+Running Process : PID_1
+( Ready Queue )
+Ready Queue : PID_3
+( I/O Queue )
+I/O Queue : PID_2
+*******************
+
+Check Scheduler Exit Condition
+Cycle ends
+
+[ Log at time : 12 ]
+Check Scheduler Exit Condition
+Checking Process Arrival Time
+Context Switching Between PID_1 <-> PID_3
+Process : PID_3 state changed to running state
+Process PID_1 end of running and enque to finished Queue at 12
+
+** Cycle Summary **
+( CPU Info )
+Running Process : PID_3
+( Ready Queue )
+Ready Queue : PID_2
+( I/O Queue )
+I/O Queue : No other process is blocked state
+*******************
+
+Check Scheduler Exit Condition
+Cycle ends
+
+[ Log at time : 13 ]
+Check Scheduler Exit Condition
+Checking Process Arrival Time
+Context Switching Between PID_3 <-> PID_2
+Process : PID_2 state changed to running state
+Process : PID_3 go to I/O State(Blocked State)
+
+** Cycle Summary **
+( CPU Info )
+Running Process : PID_2
+( Ready Queue )
+Ready Queue : No other process is ready state
+( I/O Queue )
+I/O Queue : PID_3
+*******************
+
+Check Scheduler Exit Condition
+Cycle ends
+
+[ Log at time : 14 ]
+Check Scheduler Exit Condition
+Checking Process Arrival Time
+Context Switching Between PID_2 <-> PID_3
+Process : PID_3 state changed to running state
+Process PID_2 end of running and enque to finished Queue at 14
+
+** Cycle Summary **
+( CPU Info )
+Running Process : PID_3
+( Ready Queue )
+Ready Queue : No other process is ready state
+( I/O Queue )
+I/O Queue : No other process is blocked state
+*******************
+
+Check Scheduler Exit Condition
+Cycle ends
+
+[ Log at time : 15 ]
+Check Scheduler Exit Condition
+Checking Process Arrival Time
+Only Process Terminated : PID_3 / Ready Queue Empty
+Process PID_3 end of running and enque to finished Queue at 15
+
+** Cycle Summary **
+( CPU Info )
+Running Process : No other process Running
+( Ready Queue )
+Ready Queue : No other process is ready state
+( I/O Queue )
+I/O Queue : No other process is blocked state
+*******************
+
+Check Scheduler Exit Condition
+Scheduler Simulation End!
+
+ [ Summary of FistComeFirstServed finished order ] 
+PID_1 -> PID_2 -> PID_3
+
+=========== [ Summary of each process ] ===========
+< Process : PID_1 >
+Finishing Time : 12
+Turnaround Time : 12
+CPU Time(Running State Time) : 5
+I/O Time(Blocked State Time) : 4
+Waiting Time(Ready State Time) : 3
+
+
+< Process : PID_2 >
+Finishing Time : 14
+Turnaround Time : 14
+CPU Time(Running State Time) : 5
+I/O Time(Blocked State Time) : 4
+Waiting Time(Ready State Time) : 5
+
+
+< Process : PID_3 >
+Finishing Time : 15
+Turnaround Time : 12
+CPU Time(Running State Time) : 5
+I/O Time(Blocked State Time) : 4
+Waiting Time(Ready State Time) : 3
+
+
+
+============= [ Summary of Scheduler ] =============
+Scheduler Finishing Time : 15
+Average turnaround time : 12.67
+Average waiting time : 3.67
+CPU Utilization : 100.00 %
+I/O Utilization : 80.00 %
+Throughput in processes completed per hundred time units : 20.00 %

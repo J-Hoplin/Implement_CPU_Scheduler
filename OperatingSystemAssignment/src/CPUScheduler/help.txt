@@ -1,0 +1,13 @@
+[ Parameter 1 : Text File ]
+Description : Require text file that test case is stated. Text file path should be desingate in 2 ways below
+
+< Path >
+- data.txt : data.txt from directory of Working Directory(CPUScheduler/(file))(Default file option of this program)
+- Absolute Path : text file of absoulute path from other directory. Recommend to use result of 'pwd' command(Linux/Unix)
+
+[ Parameter2 : Scheduler Type ]
+Description : Designate scheduler type you want to use there are three cases
+
+1. FCFS : First Come First Served Scheduler
+2. SJF : Shortest Job First Scheduler
+3. RR <int:Time Quantum> : Rounded Robin Scheduler, this scheduler requires Quantum Time which is type integer
